@@ -1,0 +1,34 @@
+#!/bin/sh
+
+warn() {
+    echo "$@" 1>&2
+}
+
+die() {
+    warn "$@"
+    exit 1
+}
+
+rm -f DATA/*SFP DATA/*LOG DATA/*err DATA/*ERR DATA/direct_access.lfp \
+  TIFF.CTR TOTAL.MEG *.ERR *.err  2>/dev/null
+
+rmstat=$?
+if [ $rmstat -ne 0 ]; then
+    warn "rm problem" && exit $rmstat
+fi
+
+[ "$1" = "-p" ] || exit 0
+
+ndirs=$(find IMAGES -mindepth 2 -maxdepth 2 -type d | sort -u | wc -l)
+
+if [ $ndirs -eq 1 ]; then
+    mv IMAGES/00/00/ PDF || die "Can't move IMAGES/00/00"
+elif [ $ndirs -eq 0 ]; then
+    die "problem in IMAGES"
+else
+    mv IMAGES/00/ PDF || die "Can't move IMAGES/00"
+fi
+
+rm -r IMAGES || die "Can't remove IMAGES"
+
+

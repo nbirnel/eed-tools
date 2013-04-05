@@ -1,0 +1,23 @@
+.TH ls2begend 1 ls2begend\-0.0.1
+.SH NAME
+ls2begend \- create begin - end ranges for a list of filenames
+.SH SYNOPSIS
+.B ls2begend FILE1 [FILE2...]
+.SH DESCRIPTION
+ls2begend takes a list of filenames and attempts to arrange them
+into contiguous sorted ranges. It is useful, eg for generating a 
+list of color pages to insert in a blowback job.
+.SH OPTIONS
+none
+.SH EXAMPLES
+ls2begend *.jpg *.JPG
+.sp
+generate a list of jpg ranges in the current directory
+.SH FILES
+.SH SEE ALSO
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2011 Noah Birnel
+.sp
+You may use this software however you like.

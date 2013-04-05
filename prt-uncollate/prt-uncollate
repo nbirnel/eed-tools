@@ -1,0 +1,33 @@
+#!/bin/sh
+
+prt="$1"
+sets=$2
+
+
+awk -vsets=$sets '
+{ 
+    if ( $0 ~ /~[A-Z][a-z]*~$/ ) {
+        printf("%s", old)
+        if (first == 1) {
+            for (i = 1; i < sets; i++)
+                printf("%s", old)
+        }
+        old = ""
+        first = 1
+    } 
+    
+    if ( $0 ~ /^PageCount=[0-9]*/ ) {
+        pc = $0
+        gsub(/PageCount=0*/, "", pc)
+        pc *= sets
+        $0 = sprintf("PageCount=%07d", pc + 0)
+    }
+    old = old $0 "\r\n"
+}
+
+END {
+    for (i = 1; i <= sets; i++)
+        printf("%s", old)
+}
+' "$prt" | u2d
+

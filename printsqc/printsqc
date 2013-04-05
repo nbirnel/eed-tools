@@ -1,0 +1,38 @@
+#!/bin/sh
+
+#projn="$(pwd | sed 's,.*/,,')"
+
+fail() {
+    failure=1
+    echo "not yet" 1>&2
+    sleep 5
+}
+
+waitforit() {
+    failure=1
+    while [ $failure -eq 1 ] ; do
+        failure=0
+
+        for i in *; do
+            if [ -d "$i" ]; then
+                if [ -f $i/SQCVal.txt ]; then
+                    grep "Total Pages: [1-9][0-9]*" $i/SQCVal.txt 2>/dev/null
+                    [ $# -eq 0 ] || fail
+                else
+                    fail
+                fi
+            fi
+        done
+    done
+    sleep 10
+}
+
+if [ X"$1" = X"-w" ]; then
+    waitforit
+fi
+
+for i in *; do
+    [ -d $i ] && notepad /p $i/SQCVal.txt
+done
+
+

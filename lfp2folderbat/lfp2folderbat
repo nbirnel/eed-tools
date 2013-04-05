@@ -1,0 +1,28 @@
+#!/bin/sh
+
+die() {
+    echo "$@" 1>&2
+    exit 1
+}
+
+warn() {
+    echo "$@" 1>&2
+}
+
+if [ -e mover.bat ]; then
+    mv mover.bat mover.bat.bak || die "Can't back up mover.bat"
+    warn "Backing up mover.bat"
+fi
+
+grep ',[DF],' "$1" | sort -t, -k2,2 -k1,1 | \
+awk -F, '
+/^FD/ { 
+    dir = $4
+    printf("MKDIR \"%s\"\r\n", dir)
+}
+/^IM/ { printf("MOVE %s.pdf  \"%s\\\"\r\n", $2, dir) }
+
+END { printf("pause\r\n") }
+' >mover.bat
+
+chmod 755 mover.bat

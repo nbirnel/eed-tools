@@ -1,0 +1,22 @@
+#!/bin/awk -f
+
+BEGIN { FS = "," }
+
+/^IM/ {
+    txt = $2
+
+    split($5, a, ";")
+    path = a[2]
+    sub(/[^\\]*\\/, "", path)
+    gsub(/\\/, "/", path)
+
+    if (path != opath) {
+        printf("mkdir -p \"%s\"\n", path)
+    }
+    opath = path
+
+    printf("mv -v \"%s.TXT\" \"%s/\"\n", txt, path)
+}
+
+
+

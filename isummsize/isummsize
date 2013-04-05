@@ -1,0 +1,7 @@
+#!/bin/sh
+
+gig=1073741824
+
+bytes="$(grep '"Grand Totals"' "$1" | ccut 3 | sed 's/[",]//g')"
+
+echo "scale=4;$bytes/$gig" | bc

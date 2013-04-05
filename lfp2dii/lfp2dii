@@ -1,0 +1,53 @@
+#!/bin/awk -f
+
+BEGIN { 
+    FS = "," 
+    ORS = "\r\n"
+    printf("@FULLTEXT DOC\r\n")
+}
+
+$1 == "IM" {
+    if ($3 ~ /[A-Z]/) {
+        if (nrec >= 1) {
+            printrec()
+        }
+        nrec++
+        key = $2
+        path = $5
+        sub(/;/, "\\", path)
+        sub(/@/, "", path)
+        sub(/;.*$/, "\\", path)
+        end = nend
+        beg = nbeg
+        nbeg = nend = $2
+        delete img
+        pgc = 1
+
+    } else {
+        nend = $2
+        pgc++
+    }
+    file = $5
+    sub(/;[^;]*$/, "", file)
+    sub(/.*;/, "", file)
+    img[pgc] = file
+}
+
+END {
+        end = nend
+        beg = nbeg
+        printrec()
+}
+
+function printrec() {
+    print ""
+    printf("; Record %d\r\n", nrec)
+    printf("@T %s\r\n", key)
+    printf("@C ENDDOC# %s\r\n", nend)
+    printf("@C PGCount %d\r\n", pgc)
+    printf("@D @I\\%s\r\n", path)
+    for (i = 1; i <= pgc; i++) {
+        printf("%s\r\n", img[i])
+    }
+}
+    

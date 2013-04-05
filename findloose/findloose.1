@@ -1,0 +1,40 @@
+.TH findloose 1 findloose\-0.0.1
+.SH NAME
+findloose \- print files in directories with other directories
+.SH SYNOPSIS
+.B findloose 
+.SH DESCRIPTION
+.B
+findloose
+prints all filenames below the current directory
+which are in a directory 
+which contains other directories.
+Thus:
+.IP
+dir1-file1,file2,dir2
+.IP
+dir3-file3,file4
+.PP
+would print
+.IP
+dir1/file1
+.IP
+dir1/file2
+.PP
+This is usefull when doing IPRO image imports
+if we wish to
+have those "loose" files show up before the parallel 
+directories.
+.SH OPTIONS
+none
+.SH EXAMPLES
+findloose 
+.SH FILES
+.SH SEE ALSO
+find(1)
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2011 Noah Birnel
+.sp
+You may use this software however you like.

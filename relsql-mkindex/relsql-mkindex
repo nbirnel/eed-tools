@@ -1,0 +1,11 @@
+#!/bin/sh
+
+db="$1"
+field="$2"
+index="idx_$field"
+[ $# -ge 3 ] && index="$3"
+
+printf "USE %s\r\n" "$db"
+printf "\r\n"
+printf "CREATE index %s ON eddsdbo.Document (%s)\r\n" "$index" "$field"
+

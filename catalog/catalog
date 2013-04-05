@@ -1,0 +1,14 @@
+#!/bin/sh
+
+find -type f | sort -u >/tmp/list
+awk -F'/' '{ printf("%s\n", tolower($NF)) }' /tmp/list |\
+awk -F.   '{ printf("%s\n", tolower($NF)) }' |\
+sort | uniq -c |\
+awk '
+    { 
+        total += $1
+        printf("%7d %s\n", $1, $2)
+    }
+    END { printf("%7d total\n", total) }'
+
+

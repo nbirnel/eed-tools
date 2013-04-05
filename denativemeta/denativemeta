@@ -1,0 +1,75 @@
+#!/bin/sh
+
+usage="$0 METADATA [OUTPUT]"
+native=NATIVE_FILE
+slip=$$-slip.tmp
+noslip=$$-noslip.tmp
+
+warn() {
+    echo "$@" 1>&2
+}
+
+die() {
+    status=$1
+    shift
+    warn "$@"
+    exit $status
+}
+
+while [ $# -gt 0 ]; do
+    case $1 in
+      -i)
+        inplace=1
+        shift
+        ;;
+      -n)
+        native="$2"
+        shift 2
+        ;;
+      *)
+        break 2
+        ;;
+    esac
+done
+
+if [ $# -eq 1 ]; then
+    meta="$1" 
+    out="$1.tmp"
+elif [ $# -eq 2 ]; then
+    meta="$1" 
+    out="$2"
+else
+    die 1 "USAGE: $usage"
+fi
+
+[ -f "$meta" ] || die 1 "No file $meta"
+
+sed 1q "$meta" | u2d >"$out"
+
+grep ',"Y"' "$meta" >"$slip"
+
+nfields=$(chead "$meta" | wc -l)
+nativefieldn=$(chead "$native" "$meta")
+#[ $? ] && die 1 "No such field as $native"
+
+if [ $nativefieldn -eq 1 ]; then
+    flags=$(printf '0,2-%d' $nfields)
+elif [ $nativefieldn -eq $nfields ]; then
+    flags=$(printf '1-%d,0' $(expr $nfields - 1))
+else
+    before=$(expr $nativefieldn - 1)
+    after=$(expr $nativefieldn + 1)
+    flags=$(printf '1-%d,0,%d-%d' $before $after $nfields)
+fi
+
+
+grep -v ',"Y"' "$meta" | sed 1d | ccut "$flags" >"$noslip"
+
+sort "$slip" "$noslip" | u2d >>"$out"
+
+if [ $inplace ]; then
+    mv "$out" "$meta"
+else
+    warn "output in $out"
+fi
+

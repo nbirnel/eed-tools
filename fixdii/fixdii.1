@@ -1,0 +1,41 @@
+.TH fixdii 1 fixdii\-0.0.2
+.SH NAME
+fixdii \- make most common changes to an ipro-generated DII
+.SH SYNOPSIS
+.B fixdii [OPTIONS] INPUTFILE [VOLUME]
+.SH DESCRIPTION
+.B fixdii 
+takes an input dii specified on the command line,
+changes @C MEDIA to @MEDIA, @C EDOC to @EDOC, and
+removes @C BEG-DOC lines, 
+optionally pops open a text editor with some suggestions,
+and finally renames the dii to {VOLUME} @I.DII.
+VOLUME defaults to the name of the input dii if not supplied.
+Optionally, the input dii will be removed.
+
+.SH OPTIONS
+.B -d 
+remove the input dii.
+.br
+.B -e[dit] 
+edit the resulting dii.
+.br
+.B -n[opagecount] 
+add an @NOPAGECOUNT line to the dii,
+for backwards compatibility with old versions of summation
+which cannot otherwise handle spaces in filenames.
+This is currently broken and happens anyway.
+.br
+.B -p[age] 
+specify page rather than doc level text files.
+.br
+
+.SH EXAMPLES
+fixdii INPUTFILE [VOLUME]
+.SH BUGS
+Does not remove @NOPAGECOUNT line even if not requested.
+Probably others.
+.SH LICENSE
+\(co 2011 Noah Birnel
+.sp
+You may use this software however you like.

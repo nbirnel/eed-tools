@@ -1,0 +1,62 @@
+#!/usr/bin/perl
+
+use English;
+use warnings;
+use strict;
+
+$INPUT_RECORD_SEPARATOR  = "\r\n";
+$OUTPUT_RECORD_SEPARATOR = "\r\n";
+
+my $nsing = my $nmult = 0;
+my $indir = "SINGLE-PAGE TEXT";
+my $outdir = "MULTI-PAGE TEXT";
+my $doc;
+my $contents;
+
+if (! -e $outdir) {
+    mkdir $outdir;
+} elsif (! -d $outdir) {
+    die("$outdir not a directory: $!");
+} else {
+    #no op
+}
+
+opendir MULT, $outdir || die("Can't read $outdir: $!");
+while ($contents = readdir MULT) {
+    next if ($contents =~ /^\.\.?$/);
+    warn("Contents found in $outdir");
+}
+
+# hex 0c / oct o14 / 12 / ^L after each page
+# lfp $2 is imgname, $3 is doc
+
+LINE: while (<>) {
+    if ($_ !~ /^IM,/) { next LINE } 
+    my $dummy;
+    my $img;
+    my $docflag;
+    my $remain;
+    my $outf;
+    my $inf;
+
+    chomp;
+    ($dummy, $img, $docflag, $remain) = split(/,/, $_, 4);
+    $img = "$img.TXT";
+    
+    if ($docflag =~ /^[A-Za-z]$/) { 
+        $nmult++;
+        $doc = "$img";
+        $outf = "$outdir/$doc";
+        open(OUTF, '>', $outf) || die("can't open $outf: $!");
+    }
+
+    $inf = "$indir/$img";
+    $nsing++;
+    open(INF, '<', $inf) || die("can't open $inf: $!");
+    print "writing $img ($nsing) to $doc ($nmult)";
+    while (<INF>) {
+        printf OUTF "%s", $_;
+    }
+    close(INF) || die("can't close $inf: $!");
+    printf OUTF ""
+}

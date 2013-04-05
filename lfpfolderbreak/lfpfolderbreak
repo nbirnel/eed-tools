@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#add break for every change in folder structure of import images.
+# this one is buggy due to sort .
+#grep '^IM,.*[A-Za-z]' "$1" | sort -u -t';' -k2,2 |\
+#sed 's/^IM/BM/; s/,[A-Za-z],.*/,D/' | u2d
+
+#FIXME this has not been tested
+grep '^IM,.*[A-Za-z]' "$@" |\
+awk -F';' '$2 != last { print } { last = $2 }' |\
+sed 's/^IM/BM/; s/,[A-Za-z],.*/,D/' | u2d

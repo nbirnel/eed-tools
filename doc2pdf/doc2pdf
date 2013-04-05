@@ -1,0 +1,33 @@
+#!/bin/sh
+
+warn() {
+    echo "$@" 1>&2
+}
+
+
+umask 000
+#aw='/bin/antiword'
+vbs='/usr/local/etc/doc2pdf/doc2pdf.vbs'
+
+cp -p "$vbs" ./
+chmod 755 doc2pdf.vbs
+
+for i in "$@"; do
+    bn="$(echo $i | sed 's/\.[^.]*$//')"
+    if [ ! -e "$i" ]; then
+        warn "Skipping $i, doesn't exist."
+        continue
+    fi
+    if [ -e "$bn.pdf" ]; then
+        warn "Skipping $bn, $bn.pdf exists."
+        continue
+    elif [ -e "$bn.PDF" ]; then
+        warn "Skipping $bn, $bn.PDF exists."
+        continue
+    fi
+    #$aw -a letter "$i" >"$bn.PDF"
+    cscript /nologo doc2pdf.vbs /nologo "$i"
+    [ $? != 0 ] && warn "problem with $bn.pdf"
+done
+    
+rm -f doc2pdf.vbs

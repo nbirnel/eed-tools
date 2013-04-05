@@ -1,0 +1,69 @@
+#!/bin/sh
+
+die() {
+    echo "$@" 1>&2
+    exit 1
+}
+
+doc='@FULLTEXT DOC'
+
+while [ $# -ge 1 ]; do
+    case "$1" in
+      -d)
+        delete=1
+        shift
+        ;;
+      -e)
+        edit=1
+        shift
+        ;;
+      -n*)    
+        nopagecount='@NOPAGECOUNT'
+        shift
+        ;;
+      -p*)
+        doc='@FULLTEXT PAGE'
+        shift
+        ;;
+      *)
+        break
+        ;;
+    esac
+done
+
+if [ $# = 2 ]; then
+    input="$1"
+    volume="$2"
+elif [ $# = 1 ]; then
+    input="$1"
+    volume="$(echo "$input" | sed 's#\..*##')"
+else
+    die "USAGE: fixdii INPUTFILE [VOLUME]"
+fi
+
+{
+    echo "$doc" 
+    test $nopagecount && echo "$nopagecount" 
+
+    awk '
+    {
+        if ($0 ~ /^@C MEDIA/) {
+            media = $0
+            sub(/^@C /, "@", media)
+        } else if ($0 ~ /^@C EDOC\s*$/) {
+            next
+        } else if ($0 ~ /^@C BEG-DOC/) {
+            next
+        } else if ($0 ~ /^@C EDOC/) {
+            print media
+            sub(/^@C /, "@")
+            print
+        } else {
+            print
+        }
+    } ' "$input"
+} | u2d  >"$volume @I.DII"
+
+test $edit && vim "$volume @I.DII"
+
+test $delete && rm "$input"

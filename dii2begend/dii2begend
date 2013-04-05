@@ -1,0 +1,11 @@
+#!/bin/awk -f
+
+/^@T/ {
+    sub(/@T /, "")
+    printf("%s,", $0)
+}
+
+/^@C ENDDOC#/ {
+    sub(/^@C ENDDOC# /, "")
+    printf("%s\r\n", $0)
+}

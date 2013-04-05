@@ -1,0 +1,35 @@
+#!/bin/awk -f
+
+BEGIN { 
+    id = ""
+    type = "P"
+    FS = "," 
+    printf("\"BEGDOC\",\"ENDDOC\",\"BEGATTACH\",\"ENDATTACH\",\"ID\",\"PGCOUNT\",\"TYPE\"\r\n")
+}
+
+$1 == "IM" {
+    if ($3 ~ /[A-Z]/) {
+        ndoc++
+        if ($3 == "C") { type = "C" }
+        else           { type = "P" }
+        end = nend
+        beg = nbeg
+        nbeg = nend = $2
+        if (ndoc >= 2) {
+        printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%d\",\"%s\"\r\n", beg, end, beg, end, id, pgc, type)
+        }
+        pgc = 1
+
+    } else {
+        nend = $2
+        pgc++
+    }
+}
+
+END {
+        end = nend
+        beg = nbeg
+        printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%d\",\"%s\"\r\n", beg, end, beg, end, id, pgc, type)
+}
+    
+

@@ -1,0 +1,12 @@
+#!/bin/awk -f
+
+BEGIN {
+    ORS = "\r\n"
+}
+
+/^; Record/ {
+    nrecords++
+    $0 = sprintf("; Record %d", nrecords)
+}
+
+{ print }

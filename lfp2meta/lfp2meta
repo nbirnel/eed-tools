@@ -1,0 +1,37 @@
+#!/bin/awk -f
+
+BEGIN { 
+    id = ""
+    FS = "," 
+    printf("\"BEGDOC\",\"ENDDOC\",\"BEGATTACH\",\"ENDATTACH\",\"ID\",\"PGCOUNT\",\"TYPE\",\"ATTACHCOUNT\"\r\n")
+}
+
+$1 == "IM" {
+    if ($3 ~ /[A-Z]/) {
+        if ($3 == "C") { 
+            attach++
+            type[attach] = "C" 
+            attc[0]++
+        } else {
+            nparent++
+            if (nparent >= 2) { printdoc(begatt, endatt) }
+            attach = 0
+            attc[0] = 0
+            type[attach] = "P" 
+            begatt = $2
+        }
+        begdoc[attach] = $2
+        pgc[attach] = 0
+    }
+    endatt = enddoc[attach] = $2
+    pgc[attach]++
+}
+
+END { printdoc(begatt, endatt) }
+
+function printdoc(begatt, endatt,    i) {
+    for ( i = 0; i <= attach; i++ ) {
+        printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%d\",\"%s\",\"%s\"\r\n", begdoc[i], enddoc[i], begatt, endatt, id, pgc[i], type[i], (attc[i] >= 1) ? attc[i] : "")
+    }
+}
+

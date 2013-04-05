@@ -1,0 +1,24 @@
+.TH ss2natives 1 ss2natives\-0.0.1
+.SH NAME
+ss2natives \- copy natives elsewhere for exceptions.
+.SH SYNOPSIS
+.B ss2natives [-x] [-n NATIVE_FIELD] ASCIIDAT.TXT DESTINATION
+.SH DESCRIPTION
+ss2natives generates a shell script to copy
+slipsheeted natives to a deliverable directory.
+.SH OPTIONS
+.B -x
+execute the generated script immediately.
+.br
+.B -n NATIVE_FIELD
+use NATIVE_FIELD as the location rather than the default NATIVE_FILE
+.SH EXAMPLES
+ss2natives ASCIIDAT.TXT native-dir && ./ssnatives.sh
+.SH FILES
+.SH SEE ALSO
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2012 Noah Birnel
+.sp
+You may use this software however you like.

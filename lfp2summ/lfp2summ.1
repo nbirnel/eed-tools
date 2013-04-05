@@ -1,0 +1,38 @@
+.TH lfp2summ 1 lfp2summ\-0.0.1
+.SH NAME
+lfp2summ \- create a summation dii from an ipro lfp
+.SH SYNOPSIS
+.B lfp2summ [OPTIONS] LFPFILE
+.SH DESCRIPTION
+lfp2summ prints a summation dii on standard out from an ipro lfp 
+supplied on the command line or on standard in.
+.SH OPTIONS
+.B -f FIELDED.CSV
+Use FIELDED.CSV to add tokens to the dii.
+.sp
+.B -d
+Prepend FULLTEXT DOC token to dii.
+This is the default.
+.sp
+.B -n
+Prepend NOPAGECOUNT token to dii.
+.sp
+.B -p
+Prepend FULLTEXT PAGE token to dii,
+instead of FULLTEXT PAGE.
+.sp
+.SH EXAMPLES
+lfp2summ sample.lfp >sample.dii
+.SH FILES
+.SH SEE ALSO
+.B fixdii
+(1)
+.SH BUGS
+Does not create ATTACH tokens for children.
+Does not allow renaming of tokens,
+or conditional adding MEDIA tokens.
+Probably.
+.SH LICENSE
+\(co 2012 Noah Birnel
+.sp
+You may use this software however you like.

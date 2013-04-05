@@ -1,0 +1,27 @@
+.TH lfp2binder 1 lfp2binder\-0.0.1
+.SH NAME
+lfp2binder \- suggest hardcopy binder or box breaks from an lfp
+.SH SYNOPSIS
+.B lfp2binder LFPFILE SIZE
+.SH DESCRIPTION
+.B lfp2binder
+accepts an lfp and a binder size and prints 
+begin end ranges that will fit in the binder without crossing
+document boundaries.
+.SH OPTIONS
+none
+.SH EXAMPLES
+lfp2binder foo.lfp 570
+.sp
+print begin end ranges for foo.lfp that will fit nicely in a 3 inch
+binder.
+.SH FILES
+.SH SEE ALSO
+.SH BUGS
+Does not handle two-sided, staples, tabs, or color specially.
+.sp
+Probably other bugs.
+.SH LICENSE
+\(co 2011 Noah Birnel
+.sp
+You may use this software however you like.

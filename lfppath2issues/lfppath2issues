@@ -1,0 +1,14 @@
+#!/bin/awk -f
+
+BEGIN { FS = "," }
+
+$1 == "IM" && $3 == "D" {
+    split($5, a, /;/)
+    issue = a[2]
+    sub(/[0-9]*_/, "", issue)
+    gsub(/_/, " ", issue)
+    key = $2
+    printf("IS,%s,%s\r\n", key, issue)
+}
+
+END { printf("\r\n") }

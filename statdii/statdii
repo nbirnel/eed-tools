@@ -1,0 +1,19 @@
+#!/bin/sh
+
+echo "$(grep -c '^; Record' "$1") docs"
+
+tiff=$(grep -ci '^[^@].*\.tif$' "$1")
+jpg=$(grep -ci '^[^@].*\.jpg$' "$1")
+let 'image=tiff+jpg'
+
+echo "$image images"
+echo "$tiff tiffs"
+echo "$jpg jpgs"
+
+awk '/^[a-zA-Z_]/ { print; exit }' "$1"
+echo to
+tail "$1" | grep '.' | tail -n 1
+
+sed 3q "$1"
+
+

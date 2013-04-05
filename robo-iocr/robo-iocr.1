@@ -1,0 +1,25 @@
+.TH robo-iocr 1 robo-iocr\-0.0.1
+.SH NAME
+robo-iocr \- copy IPRO ocr to another directory.
+.SH SYNOPSIS
+.B robo-iocr [-w] [-x] DESTINATION
+.SH DESCRIPTION
+robo-iocr generates a bat file to copy ocr to a single destination
+directory.
+Optionally, it will wait until the ocr is done before running.
+Optionally, it will run the bat file.
+.SH OPTIONS
+-w wait for *LOG to be accessible before running
+.br
+-x run move.bat after generating it.
+.SH EXAMPLES
+cd "PROJECT/SINGLE-PAGE TEXT"; cd OCR/PROJECT; robo-iocr "$OLDPWD";
+cmd /c move.bat
+.SH SEE ALSO
+.B watch-iocr(1)
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2011 Noah Birnel
+.sp
+You may use this software however you like.

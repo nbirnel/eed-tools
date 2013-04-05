@@ -1,0 +1,22 @@
+#!/bin/sh
+
+imgpath="$( cygpath -w "$(pwd)" | sed 's,\\,\\\\,g' )"
+
+awk -vimgpath="$imgpath" '
+BEGIN {
+    FS = ","
+    OFS = ","
+    # something is wrong - get superfluous beginning line.
+    # uncomment this?
+    #RS = "\r\n"
+    ORS = "\r\n"
+}
+
+{
+    $2 = ""
+    sub(/^([A-Z]:)?(\\)?/, imgpath "\\", $3)
+    print
+}' "$1"
+
+
+

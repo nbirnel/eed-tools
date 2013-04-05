@@ -1,0 +1,20 @@
+#!/bin/sh
+
+mover="refold.sh"
+lfp="$1"
+
+echo '#!/bin/sh' >"$mover"
+
+grep '\(^IM,.*,[A-Z],\)\|\(^FD,\)' "$lfp" | sort -t, -k2,2 -k1,1 |\
+awk '
+BEGIN { FS = "," }
+
+/^FD,/ { 
+    fold = $4
+    printf("mkdir \"%s\"\n", fold)
+}
+
+/^IM,/ { printf("mv -v \"%s.PDF\" \"%s\"\n", $2, fold) }
+' >>"$mover" 
+
+echo "run $mover from the pdf directory" 1>&2

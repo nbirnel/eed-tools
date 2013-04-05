@@ -1,0 +1,27 @@
+.TH relsql-mkindex 1 relsql-mkindex\-0.0.1
+.SH NAME
+relsql-mkindex \- generage a script to update a SQL index for Relativity
+.SH SYNOPSIS
+.B relsql-mkindex APPID FIELD [INDEXNAME]
+.SH DESCRIPTION
+.B relsql-mkindex
+generates a SQL script on standard out 
+to update the index for a field in Relativity.
+.B APPID
+can be extracted from the Relativity Web Client address bar \(em
+use the number after the
+.B AppID=
+string.
+The script can be pasted into a query window in the
+Microsoft SQL Server Management Studio, 
+and executed by hitting 
+.B F5.
+.SH OPTIONS
+none
+.SH SEE ALSO
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2012, 2013 Noah Birnel
+.sp
+You may use this software however you like.

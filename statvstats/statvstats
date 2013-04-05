@@ -1,0 +1,27 @@
+#!/bin/awk -f
+
+BEGIN { 
+    FS = "," 
+}
+
+{ gsub(/"/, "") }
+
+NR == 1 {
+    totfields = NF
+    for (i = 2; i <= NF; i++) {
+        field[i] = $i
+    }
+}
+
+NR != 1 {
+    for (j = 2; j <= totfields; j++) {
+        sum[j] += $j
+    }
+}
+
+END {
+    for (k = 2; k <= totfields; k++) {
+        printf("%d %s\n", sum[k], field[k])
+    }
+}
+

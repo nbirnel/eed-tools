@@ -1,0 +1,15 @@
+#!/bin/sh
+
+in="$1"
+#how many fields in FIELDED.TXT
+fields=$(chead "$in" | wc -l)
+
+# the first four are begend stuff
+
+i=5
+while [ $i -le $fields ]; do
+    sum=$(expr $sum + $(ccut $i "$in" | uniq | wc -l))
+    i=$(expr $i + 1)
+done
+
+echo $sum

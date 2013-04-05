@@ -1,0 +1,9 @@
+#!/bin/awk -f
+
+BEGIN {
+}
+
+NR==1 { sub(/^\xef\xbb\xbf/,"") }
+
+# otherwise we get an extraneous line end
+/./ { print }

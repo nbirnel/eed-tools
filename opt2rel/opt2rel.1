@@ -1,0 +1,24 @@
+.TH opt2rel 1 opt2rel\-0.0.1
+.SH NAME
+opt2rel \- prepare opt file for load into Relativity
+.SH SYNOPSIS
+.B opt2rel [OPTFILE]
+.SH DESCRIPTION
+opt2rel accepts an opt file on standard in or the command line,
+and outputs a new opt file on standard out,
+with no volume name and the current working directory as the path.
+.SH OPTIONS
+none
+.SH EXAMPLES
+opt2rel SAMPLE.opt >relativity-load.opt
+.br
+lfp2opt SAMPLE.lfp | opt2rel >relativity-load.opt
+.SH SEE ALSO
+.B lfp2opt
+(1)
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2012 Noah Birnel
+.sp
+You may use this software however you like.

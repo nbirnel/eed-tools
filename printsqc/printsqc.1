@@ -1,0 +1,23 @@
+.TH printsqc 1 printsqc\-0.0.1
+.SH NAME
+printsqc \- print all stat qc manifests in a volume
+.SH SYNOPSIS
+.B printsqc [-w]
+.SH DESCRIPTION
+printsqc prints all stat qc manifests (SQCVal.txt)
+available in subdirectories one below the current
+directory.
+Optionally it will wait for all manifests to be
+present and finished.
+.SH OPTIONS
+-w
+.br
+Wait for all manifests to be written.
+.SH EXAMPLES
+cd IMAGE/SCAN/SCANFILES/VOLUME01 && printsqc 
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2012 Noah Birnel
+.sp
+You may use this software however you like.

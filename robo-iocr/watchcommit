@@ -1,0 +1,50 @@
+#!/bin/sh
+
+fail() {
+    failure=1
+    echo not yet
+    sleep 5
+}
+
+waitforit() {
+    failure=1
+    while [ $failure -eq 1 ] ; do
+        failure=0
+
+        for i in $@; do
+            if [ -d "$i" ]; then
+                [ -f $i/CLOSED.LOG ] || fail
+            else 
+                fail
+            fi
+        done
+    done
+    sleep 10
+}
+
+exit 
+
+
+
+
+
+parse a list or range of batch numbers into complete batch names:
+
+pwd is FOOBAR01
+2,2a,2b,3-6 -> 
+FOOBAR002
+FOOBAR02A
+FOOBAR02B
+FOOBAR003
+FOOBAR004
+FOOBAR005
+FOOBAR006
+
+how do we deal with varying captialization? or does IPRO force 
+caps when committing? YES, IT WILL BE ALL CAPS
+
+after, we will:
+
+mkdap -a .
+statlfp IPRO2000.LFP
+

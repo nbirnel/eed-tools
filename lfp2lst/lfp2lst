@@ -1,0 +1,37 @@
+#!/bin/sh
+
+multi=no
+
+while [ $# -ge 1 ]; do
+    case "$1" in
+      -m)
+        multi=yes
+        shift
+        ;;
+      *)  
+        break
+    esac
+done
+
+lfp="$1"
+
+awk -vmulti="$multi" -F, '
+
+$1 == "IM" && $3 ~ /^[A-Z]$/ {
+    key = $2
+
+    split($5, a, ";")
+
+    vol = a[1]
+    sub("@", "", vol)
+
+    if ( multi == "yes") {
+        subf = a[2]
+        sub(/IMAGES\\[0-9][0-9]/, "", subf)
+    } else {
+        subf = ""
+    }
+
+    printf("%s,%s\\MULTI-PAGE TEXT%s\\%s.TXT\r\n", key, vol, subf, key)
+}
+' "$lfp"

@@ -1,0 +1,27 @@
+.TH statlfp 1 statlfp\-0.0.1
+.SH NAME
+statlfp \- extract useful statistics from an lfp
+.SH SYNOPSIS
+.B statlfp LFPFILE
+.SH DESCRIPTION
+.B statlfp 
+takes one argument - an lfp file - and prints some useful
+summary information on standard out. Folder tags and 
+issue tags are saved in separate files in the current
+directory.
+.SH OPTIONS
+none
+.SH EXAMPLES
+statlfp example.lfp
+.SH FILES
+.SH SEE ALSO
+statlfppretty(1) - not yet implemented
+.SH BUGS
+Only summarizes the most common tags - IM, FD, IS, ##.
+The other 23 or so tags are not yet implemented.
+.sp
+Probably other bugs.
+.SH LICENSE
+\(co 2011 Noah Birnel
+.sp
+You may use this software however you like.

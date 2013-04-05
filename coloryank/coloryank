@@ -1,0 +1,30 @@
+#!/bin/sh
+
+warn() {
+    echo "$@" 1>&2
+}
+
+execute=false
+
+if [ X"$1" = X"-x" ]; then
+    execute=true
+    shift
+fi
+
+umask 000
+test -e color && warn 'color directory exists!'
+mkdir -p color
+
+lfp="$1"
+
+grep -i '^IM.*\.jpg;4' "$lfp" |\
+awk -F';' '
+{
+    gsub(/\\/, "/", $2)
+    printf("cp -vu '"'"'%s/%s'"'"' color/\n", $2, $3)
+}' >colorcp.sh
+
+chmod 755 colorcp.sh
+
+$execute && ./colorcp.sh
+

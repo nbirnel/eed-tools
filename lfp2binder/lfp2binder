@@ -1,0 +1,44 @@
+#!/bin/sh
+
+awk -F, -vsize="$2" -vtotsheets=0 '
+    $1 == "IM" {
+        if (totsheets == 0) {
+            docstart = binderstart = $2
+            binders++
+            printf("%s - ", binderstart)
+        }
+
+        if ($3 != "") { 
+            tmpbindersheets = bindersheets + docsheets
+            if (tmpbindersheets > size) {
+
+                printf("%s, %d sheets\n", binderend, bindersheets)
+                binderstart = docstart 
+                bindersheets = docsheets
+                docstart = $2
+                printf("%s - ", binderstart)
+                binders++
+                docsheets = 0
+            } else {
+                bindersheets += docsheets
+                docsheets = 0
+            }
+
+# add to current binder
+
+            binderend = docend
+            docsheets++
+            docstart = $2
+            totsheets++
+        }
+        docsheets++
+        docend = $2
+        totsheets++
+
+    }
+    END {
+            bindersheets += docsheets
+            printf("%s, %d sheets\n", binderend, bindersheets)
+            printf("%d binders, %s sheets\n", binders, totsheets)
+    }
+' "$1"

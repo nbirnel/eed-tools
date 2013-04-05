@@ -1,0 +1,7 @@
+#!/bin/sh
+
+for i in "$@"; do
+    prt="$i"
+    newn="$(grep '~Document~' "$prt" | sed -n '1s/~.*//p')"
+    mv -vb "$prt" "$newn.prt"
+done

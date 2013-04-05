@@ -1,0 +1,29 @@
+.TH meta2fielded 1 meta2fielded\-0.0.1
+.SH NAME
+meta2fielded \- generate fielded text file from a metadata csv
+.SH SYNOPSIS
+.B meta2fielded [-b BEGDOCFIELD] [-n NATIVEFIELD] METADATA.CSV
+.SH DESCRIPTION
+.B meta2fielded
+creates a fielded text file (for use by Ipro screate)
+from a metadata csv.
+.SH OPTIONS
+.B -n NATIVEFIELD
+.br
+use NATIVEFIELD instead of "NATIVE_FILE"
+.br
+.B -b BEGDOCFIELD
+.br
+use BEGDOCFIELD instead of "BEGDOC"
+.SH EXAMPLES
+meta2fielded METADATA.CSV
+.br
+meta2fielded -n NATIVE todd-z-job.CSV
+.SH FILES
+.SH SEE ALSO
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2011 Noah Birnel
+.sp
+You may use this software however you like.

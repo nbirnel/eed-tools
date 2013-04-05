@@ -1,0 +1,15 @@
+#!/bin/sh
+
+echo "$(grep -c ',Y,' "$1") docs"
+
+echo "$(wc -l < "$1") images"
+echo "$(grep -ci '\.tif,' "$1") tiffs"
+echo "$(grep -ci '\.jpg,' "$1") jpgs"
+
+sed 1q "$1"| sed 's/,.*//'
+echo to
+sed '$!d' "$1" | sed 's/,.*//'
+
+sed 1q "$1"
+
+

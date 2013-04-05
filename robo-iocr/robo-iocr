@@ -1,0 +1,30 @@
+#!/bin/sh
+
+umask 0000
+
+while [ "$#" -gt 1 ]; do
+    case "$1" in
+      -w)
+        watch=1
+        shift
+        ;;
+      -x)
+        execute=1
+        shift
+        ;;
+    esac
+done
+
+test $watch && watch-iocr
+
+dest="$(cygpath -w "$1")"
+
+{ for i in $(find . -mindepth 3 -maxdepth 3 -type d | sort -u ); do
+    echo robocopy '"'"$(cygpath -w "$(pwd)"/$i)"'"' '"'"$dest"'"'
+done } | u2d >move.bat
+
+chmod 755 move.bat
+
+test $execute && cmd /c move.bat
+
+exit 0

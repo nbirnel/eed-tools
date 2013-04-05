@@ -1,0 +1,60 @@
+#!/bin/sh
+
+warn() {
+    echo "$@" 1>&2
+}
+
+cleanup() {
+    rm -f "$header" "$body" "xx*.tmp.prt"
+}
+
+#make a text file of places to break on.
+#and a prt file
+prt="$1"
+breaks="$2"
+header=header
+body=body
+out=out
+
+if [ $# -eq 3 ]; then
+    out="$3"
+elif [ $# -ne 2 ]; then
+    warn "USAGE: $0 PRTFILE BREAKLISTFILE [OUTPUTDIR]"
+    cleanup
+    exit 1
+fi
+
+mkdir "$out"
+
+warn writing header...
+#FIXME this is a very dumb and fragile algorithm for
+#      finding the header.
+#      try
+#      csplit /~Document/
+sed 27q "$prt" | sed 's/PageCount=.*/PageCount=__PC__/' >"$header"
+sed -n '28,$p' "$prt" >"$body"
+
+warn splitting prt... this is slow
+sed 's/$/~SPLITME/' "$breaks" |\
+join -t~ -j1 -a1 "$body" - |\
+csplit -s -b '%04d.tmp.prt' - '/~SPLITME/' '{*}'
+
+warn writing new prts... this is slower
+for i in xx*.tmp.prt; do
+    nl=$(printf '%07d' $(wc -l <$i))
+    [ "$nl" = 0000000 ] && continue
+    newn=$(echo $i | sed 's/\.tmp\.prt$/.prt/; s/^xx//')
+    warn writing "$newn"
+    sed 's/__PC__/'$nl'/' "$header" | u2d >"$out/$newn"
+    sed 's/~SPLITME//' $i | u2d >>"$out/$newn"
+done
+
+cleanup
+
+warn done
+
+warn set IPRO print options to staple, and
+warn set IPRO batch print directory to:
+cd "$out" &&  warn $(cygpath -w "$PWD")
+warn and use auto polling to get mixed staples and slipsheets
+

@@ -1,0 +1,35 @@
+#!/bin/sh
+
+string='not yet'
+
+test $# -gt 0 && string="$@"
+
+while :; do
+    echo "$string"
+    [ -f [0-9]*_VolumeManifest.txt ] && break
+done
+
+sleep 5
+
+exit
+
+cat <<EOF
+
+IMG and OF dirs are created, slowly, over the time of the job.
+Finally, the various text files are created, over less than 1 minute.
+
+Last thing created is VolumeManifest.mft
+birth and change time are .003 seconds apart.
+
+.1 seconds later, ../[0-9][0-9]_VolumeManifest.txt and
+../[0-9][0-9]_ImageKeyErrors.txt
+
+are created.
+Run from "U:\CLIENTS\S\SAVITT\EXP_PROD\1205351603\EDD\EDD_RESULTS\EXP_PROD01"
+
+imagekeyerrors might not be created, if there are no errors.
+
+EOF
+
+
+

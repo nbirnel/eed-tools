@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# remove all breaks from a job.
+grep '^IM,[^,][^,]*,[A-Za-z],' "$@" | sed 's/^IM/BF/; s/,[A-Za-z],.*/,/' |\
+u2d

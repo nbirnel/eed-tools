@@ -1,0 +1,48 @@
+#!/bin/sh
+
+blank="BLANK"
+
+while [ $# -ge 1 ]; do
+    case "$1" in 
+      -b)
+        blank="$2"
+        shift 2
+        ;;
+      *)
+        break
+        ;;
+    esac
+done
+
+# sort on the image key, then by op-code, so 
+#  FD,00001,folder info
+#  IM,00001,D,volume and path info
+#  IM,00002, ,volume and path info
+
+sort -t, -k2,2 -k1,1 "$1" |
+awk -vblank="$blank" '
+BEGIN { 
+    FS = ","
+    err = 0
+# a header
+    printf("\"BEGDOC\",\"FOLDER\"\r\n")
+}
+
+# set the folder name, complain if blank.
+# Optionally fill if blank.
+$1 == "FD" { 
+    if ($4 !~ /[^ ]/) {
+        err++
+        printf("No text for folder flag %s\n", $2) | "cat 1>&2"
+        if (blank ~ /./) { fld = blank }
+    } else {
+        fld = $4
+    }
+}
+
+$1 == "IM" {
+    if ($3 ~ /[A-Za-z]/)   { printf("\"%s\",\"%s\"\r\n", $2, fld) }
+}
+
+END { exit err }
+'

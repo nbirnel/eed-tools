@@ -1,0 +1,21 @@
+#!/bin/sh
+
+grep '^IM,' "$@" | sort -t, -k2,2 |
+awk -F, '
+{
+    if ($3 ~ /[A-Za-z]/ ) {
+        nbeg = $2
+        if (NR > 1) {
+            printf("%s,%s\r\n", obeg, end)
+        }
+        end = obeg = nbeg
+    } else {
+        end = $2
+    }
+}
+
+END {
+    printf("%s,%s\r\n", obeg, end)
+}' >'Beg End.txt'
+
+

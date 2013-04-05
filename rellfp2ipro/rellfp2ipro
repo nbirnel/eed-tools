@@ -1,0 +1,19 @@
+#!/bin/awk -f
+
+BEGIN {
+    FS = ","
+    OFS = ","
+    ORS = "\r\n"
+}
+
+# strip the useless and dangerous byte-order mark 
+NR==1 { sub(/^\xef\xbb\xbf/,"") }
+
+# strip the relative path mark .\ from the image path,
+# and add a tidy space to the doc break field
+/^IM/ {
+    sub(/;\.\\/, ";", $5)
+    sub(/^$/, " ", $3)
+}
+
+{ print }

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+projn="$(pwd | sed 's,.*/,,; s/[0-9][0-9]$//')"
+
+while [ $# -ge 1 ]; do
+    case "$1" in 
+      -p)
+        projn="$2"
+        shift 2
+        ;;
+      *)
+        break
+        ;;
+    esac
+done
+
+fail=true
+
+while [ $fail = "true" ]; do
+    fail=false
+    echo "not yet" 1>&2
+    for i in "$@"; do
+        ls "$projn$i/CLOSED.LOG" 2>/dev/null || fail=true
+    done
+done
+
+exit

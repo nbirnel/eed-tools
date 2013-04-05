@@ -1,0 +1,68 @@
+#!/bin/sh
+
+umask 0000
+
+die() {
+    warn "$@"
+    exit 1
+}
+
+warn() {
+    echo "$@" 1>&2
+}
+
+showtemplates() {
+    echo "Templates from $config/ini":
+    printf '\n'
+    ( cd "$config/ini/" && ls *.ini | sed 's#\.ini$##' )
+}
+
+#FIXME add user templates, check for specified temp
+#FIXME allow volume name different from mkdir, eg
+#      mkdir VOL01, but vol is VOL01A
+config="/usr/local/etc/mk-iexport"
+ini="$config/ini/default.ini"
+sfp="$config/sfp/default.sfp"
+
+if [ "$1" = "-l" ]; then
+    showtemplates
+    exit
+fi
+
+vol="$(echo $1 | tr [:lower:] [:upper:])"
+pref="$2"
+bates="$3"
+
+if [ $# -ge 4 ]; then
+    ini="$config/ini/$4.ini"
+fi
+
+[ -f "$ini" ] || die "No template $ini!"
+
+mkdir -p "$vol"
+
+cd "$vol" || die "Can't cd to $vol"
+
+export="$(cygpath -w "$(pwd)" | sed 's#\\#\\\\#g')"
+
+awk -vvol="$vol" -vpref="$pref" -vbates="$bates" -vexport="$export" \ '
+
+BEGIN {
+    FS  = "="
+    OFS = "="
+    ORS = "\r\n"
+}
+
+$2 == "!!VOLUME!!" { $2 = vol    }
+$2 == "!!PREFIX!!" { $2 = pref   }
+$2 == "!!BATES!!"  { $2 = bates  }
+$2 == "!!EXPORT!!" { $2 = export }
+                   { print       }
+
+' "$ini" >"$vol.ini"
+
+sed 's/!!VOLUME!!/'"$vol"'/' "$sfp" | u2d >"$vol.sfp"
+
+cygpath -w "$(pwd)" >/dev/clipboard
+
+

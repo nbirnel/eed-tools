@@ -1,0 +1,20 @@
+#!/bin/sh
+
+awk '
+{ 
+    gsub(/\\/, "\\\\") #escape backslash to survive troff
+
+    troff = $0 ".troff"
+    printf(".ps 16  \\\" 16 pt\n") >troff
+    printf(".vs 20  \\\" plenty of vertical space\n") >troff
+    printf(".nh  \\\" no hyphens\n") >troff
+    printf(".sp 2\n") >troff
+    print >troff
+    printf(".bp\n") >troff
+    printf("%s,vol,path\\%s.tif,Y,,,1\r\n", $0, $0) >>overlay.opt
+}
+' "$@" 
+for i in *.troff; do
+    base="$(echo "$i" | sed 's/\.[^.]*//')"
+    groff "$i" > "$base.ps" && pstopnm "$base.ps" | pnmtotiff >"$base.tif"
+done

@@ -1,0 +1,21 @@
+.TH coloryank 1 coloryank\-0.0.1
+.SH NAME
+coloryank \- copy jpgs from a build to a color directory
+.SH SYNOPSIS
+.B coloryank [-x] LFPFILE
+.SH DESCRIPTION
+coloryank checks the provided lfp for jpgs,
+and creates a shell file to copy them to a folder named color.
+This is useful for reviewing an IPRO build.
+It should be run from wherever the correct
+direct access path of the lfp is.
+.SH OPTIONS
+-x execute the shell file 
+.SH EXAMPLES
+cd NEWLY-BUILT-JOB && coloryank LFPFILE && ./colorcp.sh
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2012 - 2013 Noah Birnel
+.sp
+You may use this software however you like.

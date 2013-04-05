@@ -1,0 +1,7 @@
+#!/bin/sh
+
+gig=1073741824
+
+bytes="$(echo "$@" |  sed 's/[",]//g')"
+
+echo "scale=4;$bytes/$gig" | bc

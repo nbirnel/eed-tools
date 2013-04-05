@@ -1,0 +1,29 @@
+#!/bin/sh
+
+warn() {
+    echo "$@" 1>&2
+}
+
+
+umask 000
+#aw='/bin/antiword'
+
+for i in "$@"; do
+    bn="$(echo $i | sed 's/\.[^.]*$//')"
+    if [ ! -e "$i" ]; then
+        warn "Skipping $i, doesnt exist."
+        continue
+    fi
+    if [ -e "$bn.pdf" ]; then
+        warn "moving $bn.pdf to $bn-1.pdf."
+        mv "$bn.pdf" "$bn-1.pdf"
+    elif [ -e "$bn.PDF" ]; then
+        warn "moving $bn.PDF to $bn-1.pdf."
+        mv "$bn.PDF" "$bn-1.pdf"
+    fi
+    # $aw -a letter "$i" >"$bn.PDF"
+    cscript /nologo doc2pdf.vbs /nologo "$i" /o:"$bn.pdf"
+    [ $? != 0 ] && warn "problem with $bn.pdf"
+    echo "$i"
+    rm "$i"
+done

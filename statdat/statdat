@@ -1,0 +1,13 @@
+#!/bin/sh
+
+lines=$(wc -l < "$1")
+let 'docs=lines-1'
+echo "$docs docs"
+
+#awk '/^[a-zA-Z_]/ { print; exit }' "$1"
+#echo to
+#tail "$1" | grep '.' | tail -n 1
+
+sed 1q "$1"
+
+

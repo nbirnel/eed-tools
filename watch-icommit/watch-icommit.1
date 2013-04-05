@@ -1,0 +1,25 @@
+.TH watch-icommit 1 watch-icommit\-0.0.1
+.SH NAME
+watch-icommit \- wait for an Ipro commit to complete
+.SH SYNOPSIS
+.B watch-icommit [-p PROJNAME] BATCHNUMBER...
+.SH DESCRIPTION
+watch-icommit watis for the specified batchnumbers to
+contain a CLOSED.LOG file.
+It is mainly intended for use in shell scripts and makefiles.
+.SH OPTIONS
+.B -p PROJNAME
+specify the project name.
+By default, this is the current working directory minus
+the last two digits.
+.SH EXAMPLES
+watch-icommit -p FOOJOB $(seq -f'%03.0f' 3 11)
+.br
+watch-icommit 002 003 03A
+.SH SEE ALSO
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2012 Noah Birnel
+.sp
+You may use this software however you like.

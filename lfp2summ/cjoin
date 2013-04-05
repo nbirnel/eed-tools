@@ -1,0 +1,119 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use vars qw($opt_j $opt_a $opt_s $opt_1 $opt_2 $opt_h $opt_u);
+use Getopt::Std;
+use English;
+use Text::ParseWords;
+
+$RS  = "\r\n";
+$ORS = "\r\n";
+
+my ($allf, $joinfd1, $joinfd2, @tests); 
+my $skip = 0;
+my $delim = ',';
+my $keepqu = 1;
+
+getopts('hwa:s:1:2:j:u');
+if ($opt_h) { &help(0); }
+
+if ($opt_s) { $skip = $opt_s; }
+if ($opt_a) { $allf = $opt_a; }
+if ($opt_1) { $joinfd1 = $opt_1 -1; }
+if ($opt_2) { $joinfd2 = $opt_2 -1; }
+if ($opt_j) { $joinfd1 = $joinfd2 = $opt_j -1; }
+if ($opt_u) { 
+    $RS  = "\n";
+    $ORS = "\n";
+}
+
+my $file1 = $ARGV[0];
+my $file2 = $ARGV[1];
+
+if (defined $allf) {
+    if ($allf == 1) { $allf = $file1; }
+    elsif ($allf == 2) { $allf = $file2; }
+    else { die("option -a takes 1 or 2"); }
+}
+
+open(F1, "< $file1") || die("can't open $file1: $!");
+open(F2, "< $file2") || die("can't open $file2: $!");
+while (<F1>) {
+    my $line1 = $_;
+    my $infields2;
+    chomp $line1;
+    my @input1 = quotewords($delim, $keepqu, $line1);
+
+    my $line2 = <F2>;
+
+    if (defined($line2)) {
+        chomp $line2;
+        my @output2;
+        my @input2 = quotewords($delim, $keepqu, $line2);
+        $infields2 = $#input2;
+
+# fixme check defined $input2[$joinfd2] to avoid error at end
+# make this a while loop to include multiple lines of match
+
+        if ($input1[$joinfd1] eq $input2[$joinfd2]) {
+            my $i = 0;
+            my $j = 0;
+            foreach my $keeper (@input2) {
+                if ($joinfd2 != $i) {
+                    $output2[$j++] = $input2[$i];
+                }
+                $i++;
+            }
+            my $out2 = join ',', @output2;
+            printf("%s,%s\r\n", $line1, $out2);
+        }
+    } elsif (defined $allf) {
+        print "foo\n";
+    }
+}
+
+
+sub help {
+    my $status = shift;
+    while (<DATA>) { print; }
+    exit $status;
+}
+
+__END__
+
+USAGE
+cjoin [-u] [-s S] -1 FIRSTFIELD -2 SECONDFIELD file1 file2
+cjoin [-u] [-s S] -j JOINTFIELD file1 file2
+cjoin -h
+
+OPTIONS
+-s S           Print but do not process first S lines
+-j FIELD       Join on FIELD of both files
+-1 FIELD       Join on FIELD of file one
+-2 FIELD       Join on FIELD of file two
+-h             Display help and exit
+-u  Use unix line endings for input and output
+
+EXAMPLES
+  cjoin -s1 -1 1 -2 3 ORIGINAL.csv X-REF.csv 
+Print all lines of XREF where field 3 matches ORIGINAL
+field 1. Also print the first line, no matter what.
+
+SEE ALSO
+ccut
+chead
+csort
+cval
+
+BUGS
+Don't use this with Strawberry Perl. If you are on Windows,
+use Cygwin Perl. (Not tested with ActiveState Perl.)
+
+Fields are numbered from 1 on the command line, but internally
+are represented from 0.
+
+TODO
+Check our arguments better - are the fields all numbers?
+Do the files exist? Did we receive garbage flags?
+
+Add a flag to do conditional matching?

@@ -1,0 +1,28 @@
+#!/bin/sh
+
+die() {
+    warn "$@"
+    exit 1
+}
+
+warn() {
+    echo "$@" 1>&2
+}
+
+usage="Usage: $0 LFPFILE NUMIMAGES"
+
+test "$#" -eq 2 || die "$usage"
+
+lfp="$1"
+img="$2"
+
+test -r "$lfp" || die "$lfp not readable"
+test "$img" -gt 0 2>/dev/null || die "$usage"
+
+current=$(grep -c '^IM,' "$lfp")
+
+while [ $current -lt $img ]; do
+    echo "$current out of $img" >&2
+    current=$(grep -c '^IM,' "$lfp")
+    sleep 5
+done

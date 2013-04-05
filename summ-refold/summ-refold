@@ -1,0 +1,16 @@
+#!/bin/awk -f
+
+BEGIN { FS = "," }
+
+/^IM,/ {
+    if ($3 ~ /[A-Z]/) {
+        split($5, a, /;/)
+        dest = a[2]
+        src  = a[3]
+        sub(/\.[^.]*$/, ".TXT", src)
+        gsub(/\\/, "/", dest)
+        sub(/$/, "/", dest)
+        printf("cp -v \"MULTI-PAGE TEXT/%s\" \"%s\"\n", src, dest)
+    }
+}
+

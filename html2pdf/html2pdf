@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for i in "$@"; do
+    base="$(echo $i | sed 's/\..*$//')"
+    htmldoc --webpage -t pdf "$i" > "$base.pdf"
+done

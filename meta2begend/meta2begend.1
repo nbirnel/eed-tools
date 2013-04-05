@@ -1,0 +1,27 @@
+.TH meta2begend 1 meta2begend\-0.0.1
+.SH NAME
+meta2begend \- generate begin end ranges from a csv metadata file
+.SH SYNOPSIS
+.B meta2begend [METADATAFILE [OUTFILE]]
+.SH DESCRIPTION
+meta2begend uses a metadata csv
+(by default will use anything called *MetaData.csv in the current working directory)
+to create a begin end file (by default named Beg End.txt).
+.SH OPTIONS
+none
+.SH EXAMPLES
+meta2begend METADATAFILE OUTFILE
+.sp
+meta2begend METADATAFILE 
+.sp
+meta2begend 
+.SH FILES
+.SH SEE ALSO
+.SH BUGS
+Assumes fields 1 and 2 are begin and end fields in metadata file.
+.sp
+Probably others.
+.SH LICENSE
+\(co 2011 Noah Birnel
+.sp
+You may use this software however you like.

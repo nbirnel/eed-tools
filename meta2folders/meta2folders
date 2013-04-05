@@ -1,0 +1,26 @@
+#!/bin/sh
+
+warn() {
+    echo "$@" 1>&2
+}
+
+doc=BEGDOC
+loc=LOCATION
+meta="$1"
+out=folds.sh
+tmpfile="$TMP/meta2folders-$$"
+
+ccut $(chead "$doc" "$loc" "$meta") "$meta" |\
+sed '1d;
+s,->,\\,g;
+s/\.zip"$/"/;
+s,\\,/,g;
+s,"$,/",' >"$tmpfile"
+
+ccut 2 "$tmpfile" | sort -u | sed 's/^/mkdir -p /; s/"/'"'"'/g' >"$out"
+
+sed 's/","/'"'"'\* '"'"'/; s/^/cp -v /; s/"/'"'"'/g' "$tmpfile" >>"$out"
+
+chmod 755 "$out"
+
+warn "now run ./$out"

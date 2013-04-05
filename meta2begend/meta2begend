@@ -1,0 +1,43 @@
+#!/bin/sh
+
+usage="USAGE: $0 [metadata in [begend out]]"
+begend="Beg End.txt"
+
+die() {
+    echo "$@" 1>&2
+    exit 1
+}
+
+warn() {
+    echo "$@" 1>&2
+}
+
+if [ $# -eq 2 ]; then
+    begend="$2"
+    meta="$1"
+elif [ $# -eq 1 ]; then
+    meta="$1"
+elif [ $# -eq 0 ]; then
+    provometa="$(ls *MetaData.csv)"
+    nmetas="$(echo $provometa | wc -l)"
+    if [ "$nmetas" = 1 ]; then
+        meta="$provometa"
+    elif [ "$nmetas" = 0 ]; then 
+        die "No metadata found. $usage"
+    else 
+        die "Not sure which metadata to use. $usage"
+    fi
+else 
+    die "$usage"
+fi
+
+[ -f "$meta" ] || die "No such file as $meta"
+
+if [ -e "$begend" ]; then
+    mv "$begend" "$begend.bak" || die "can't make backup"
+    warn "backing up $begend"
+fi
+
+#FIXME have it look for the right fields
+ccut 1,2 "$meta"  | sed '1d; s/"//g' | u2d | tee "$begend"
+

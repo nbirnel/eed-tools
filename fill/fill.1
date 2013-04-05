@@ -1,0 +1,41 @@
+.TH fill 1 fill\-0.0.1
+.SH NAME
+fill \- fill blank lines with the last non-blank line
+.SH SYNOPSIS
+.B fill [FILE]
+.SH DESC.LPTION
+.B fill 
+duplicates non-blank lines of standard in or 
+.B FILE
+on all subsequent blank lines until the next non-blank.
+.SH OPTIONS
+none
+.SH EXAMPLES
+.LP
+.B echo 'foo
+
+.B bar
+
+.B baz' | fill
+.LP
+yields
+.LP
+.B foo
+.br
+.B foo
+.br
+.B bar
+.br
+.B bar
+.br
+.B bar
+.br
+.B baz
+.SH SEE ALSO
+.B awk(1)
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2011, 2013 Noah Birnel
+.sp
+You may use this software however you like.

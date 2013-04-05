@@ -1,0 +1,45 @@
+#!/bin/awk -f
+
+BEGIN { 
+    FS = ","
+    ORS = "\r\n"
+    outsing = "single.bat"
+    outmult = "multi.bat"
+}
+
+
+/^IM,/ {
+    if ($3 ~ /[SBFDC]/) {
+        multpath = $5
+        sub(/.*\\/, "", multpath)
+        sub(/;.*$/, "", multpath)
+        if (multpath != oldmultpath) {
+            printf("MKDIR %s\r\n", multpath) > outmult
+            multdirs++
+        }
+        printf("MOVE %s.TXT %s\r\n", $2, multpath) > outmult
+        multpp++
+        oldmultpath = multpath
+    }
+
+    singpath = $5
+    sub(/.*\\/, "", singpath)
+    sub(/;.*$/, "", singpath)
+    if (singpath != oldsingpath) {
+        printf("MKDIR %s\r\n", singpath) > outsing
+        singdirs++
+    }
+    printf("MOVE %s.TXT %s\r\n", $2, singpath) > outsing
+    singpp++
+    printf("page %s\n", singpp) | "cat 1>&2"
+    oldsingpath = singpath
+}
+
+END {
+    printf("%d single folders\n", singdirs) | "cat 1>&2"
+    printf("%d multi folders\n", multdirs) | "cat 1>&2"
+    printf("%d single page text\n", singpp) | "cat 1>&2"
+    printf("%d multi page text\n", multpp) | "cat 1>&2"
+    printf("DEL %s\r\n", outsing) > outsing
+    printf("DEL %s\r\n", outmult) > outmult
+}

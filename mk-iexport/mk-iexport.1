@@ -1,0 +1,36 @@
+.TH mk-iexport 1 mk-iexport\-0.0.2
+.SH NAME
+mk-iexport \- set up ipro ecap export
+.SH SYNOPSIS
+.B mk-iexport VOLUME PREFIX NUMBER [TEMPLATE]
+.br
+.B mk-iexport -l
+.SH DESCRIPTION
+mk-iexport creates a directory VOLUME in the current directory,
+creates an ini file for ecap's use,
+creates an sfp file for a new ipro job,
+and puts the full explorer path to VOLUME in the windows clipboard.
+VOLUME will be capitalized for you.
+.SH OPTIONS
+-l
+.br
+list available templates.
+.SH EXAMPLES
+mk-iexport trailboss01 control 0001
+.sp
+mk-iexport trailboss01 control 0001 extract
+.SH FILES
+.IP /usr/local/etc/mk-iexport
+system-wide templates
+.IP $HOME/.config/mk-iexport
+user templates
+.SH SEE ALSO
+.SH BUGS
+User templates are not implemented yet.
+There is no error checking.
+Ecap ignores the bates number.
+Probably others.
+.SH LICENSE
+\(co 2011 - 2012 Noah Birnel
+.sp
+You may use this software however you like.

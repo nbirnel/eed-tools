@@ -1,0 +1,56 @@
+#!/bin/awk -f
+
+BEGIN { 
+    #FIXME why does this cause a bug?!
+#    RS = "\r\n"
+    ORS = "\r\n"
+    FS = ","
+    OFS = ","
+    imop = "IM"
+    offset = "0"  # FIXME we should adjust this for pdfs
+}
+
+#input 
+#IMG0001,VOLUME01,x:\windows\path\to\image\IMG0001.TIF,Y,,6
+#output
+#IM,IMG0001,D,0,@VOLUME01;x:\windows\path\to\image;IMG0001.TIF;2
+
+#FIXME check for correct formation?
+#remove dumb byte order mark by default?
+{
+
+    key   = $1
+    vol   = "@" $2
+    path  = img = fpath = $3
+    doc   = $4
+    fold  = $5
+    box   = $6
+    pp    = $7
+
+# Keep these in this order - box overrides folder, folder overides doc
+    brk = (doc  == "Y" ? "D" : " ")
+    brk = (fold == "Y" ? "F" : brk)
+    brk = (box  == "Y" ? "B" : brk)
+
+    sub(/\\[^\\]*$/, "", path)
+
+    sub(/^.*\\/, "", img)
+
+    ext = tolower(img)
+    sub(/.*\./, "", ext)
+    if (ext == "jpg") {
+        type = 4
+    } else if (ext == "tif") {
+        type = 2
+    } else if (ext == "pdf") {
+        type = 7
+    }
+
+    outpath = vol ";" path ";" img ";" type
+    print imop, key, brk, offset, outpath
+}
+
+    
+    
+
+

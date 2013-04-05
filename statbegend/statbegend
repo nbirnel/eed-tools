@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo $(wc -l < "$1") "docs"
+echo $(sed -n '1s/,.*$//p' "$1") "to" $(sed -n '$s/^.*,//p' "$1")
+
+

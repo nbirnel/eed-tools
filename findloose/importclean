@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# findloose
+
+# find -type f | sort u > listing
+
+# grep , listing
+# other forbidden chars?
+
+# grep -iv '\.\(tif\)\|\(jpg\)\|\(pdf\)$' list

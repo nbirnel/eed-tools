@@ -1,0 +1,75 @@
+#!/bin/sh
+
+out=direct_access.lfp
+
+die() {
+    echo "$@" 1>&2
+    exit 1
+}
+
+warn() {
+    echo "$@" 1>&2
+}
+
+nlfp=$(ls *[Ll][Ff][Pp] 2>/dev/null | wc -l)
+
+if [ $nlfp -eq 0 ]; then
+    die "No lfps present"
+fi
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+      -a)
+        if [ -f "$2" ]; then
+            out="$2"
+            shift 2
+            break 2
+        else
+            if [ $nlfp -eq 1 ]; then
+                out=$(ls *lfp *LFP 2>/dev/null)
+                shift
+                break 2
+            else
+                die "More than one lfp - specify which to append to"
+            fi
+        fi
+        ;;
+      *)
+        break 2
+        ;;
+    esac
+done
+
+if [ $# -eq 1 ]; then
+    case "$1" in
+      ./)
+        dap="$(cygpath -w "$(pwd)")"
+        ;;
+      .)
+        dap="$(cygpath -w "$(pwd)")"
+        ;;
+      *)
+        dap="$(cygpath -w "$1")"
+        ;;
+    esac
+elif [ $# -eq 0 ]; then
+    dap="$(cygpath -w ..)"
+else 
+    die "USAGE: mkdap [PATH]"
+fi
+
+if [ -e "$out" ]; then
+    cp "$out" "$out.bak" || die "can't backup $out"
+    warn "backing up $out"
+fi
+
+# get the volume name from existing lfp
+#IM,NUMBER,D,0,@VOLUME;RELATIVE\PATH;IMAGE.TIF;2
+
+for volume in $(grep -h '^IM,' *lfp *LFP 2>/dev/null |\
+    awk -F, '{ split($5, a, ";"); sub(/^@/, "", a[1]); print a[1] }' |\
+    sort -u); do
+
+    printf "VN,%s,%s,99\r\n" "$volume" "$dap" >>"$out"
+done
+

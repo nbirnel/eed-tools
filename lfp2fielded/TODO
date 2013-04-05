@@ -1,0 +1,4 @@
+exit 1 if any blanks
+incorporate into lfp2meta
+default to TERISBLANK for blanks (maybe a build-time configuration)
+

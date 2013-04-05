@@ -1,0 +1,28 @@
+#!/bin/sh
+
+newline="n"
+
+if [ x"$1" = x"-n" ]; then
+    newline="y"
+    shift
+fi
+
+awk -vnewline=$newline '
+BEGIN {
+    printf(".ps 16  \\\" 16 pt\n")
+    printf(".vs 20  \\\" plenty of vertical space\n")
+    printf(".nh  \\\" no hyphens\n")
+
+}
+
+{ 
+    printf(".sp 2\n")
+    #printf(".ce 50\n")
+    if (newline == "y")
+        gsub(/\\/, "\n.br\n\\\\") #backslash -> newline and backslash
+    else
+        gsub(/\\/, "\\\\") #escape backslash to survive troff
+    print
+    printf(".bp\n")
+}
+' "$@" | groff - > slipsheets.ps && ps2pdf slipsheets.ps

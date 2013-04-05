@@ -1,0 +1,33 @@
+.TH denativemeta 1 denativemeta\-0.0.1
+.SH NAME
+denativemeta \- empty NATIVE_FILE in metadata records without slipsheets
+.SH SYNOPSIS
+.B denativemeta [-i] [-n FIELDNAME] METADATA [OUTPUT]
+.SH DESCRIPTION
+denativemeta clears the NATIVE_FILE field 
+(or other field specified with an n switch)
+from all records without an exception.
+The output by default is a file named after the input file, 
+with .tmp appended.
+.SH OPTIONS
+.B -i
+inplace - move the output file to the original metadata name when done
+.br
+.B -n FIELDNAME
+clear FIELDNAME instead of NATIVE_FILE
+.SH EXAMPLES
+denativemeta -i example.csv 
+.SH FILES
+.B $$-slip.tmp
+.br
+.B $$-noslip.tmp
+.br
+Temporary files.
+.SH SEE ALSO
+.B asciidat2meta(1), ss2native(1)
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2012 Noah Birnel
+.sp
+You may use this software however you like.

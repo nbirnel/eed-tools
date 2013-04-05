@@ -1,0 +1,7 @@
+#!/bin/awk -f
+
+{ 
+    if ($0 ~ /./) { value = $0 }
+    else          { $0 = value }
+    print 
+}

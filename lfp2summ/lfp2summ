@@ -1,0 +1,100 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use Getopt::Std;
+use vars qw($opt_f $opt_d $opt_n $opt_p);
+use Text::ParseWords;
+
+$\ = "\r\n";
+
+my $FS = ',';
+
+my $rec = 0;
+my ($pc, $fielded, $nopages, $nfields);
+my %key;
+my @fieldname;
+my ($vol, $path, %img, $imgtype);
+my $texts='@FULLTEXT DOC';
+my $delim = ',';
+my $keepqu = 0;
+
+getopts('f:dnp');
+
+if ($opt_f) { $fielded = $opt_f; }
+if ($opt_d) { $texts='@FULLTEXT DOC'; }
+if ($opt_n) { $nopages='@NOPAGECOUNT'; }
+if ($opt_p) { $texts='@FULLTEXT PAGE'; }
+
+if ($fielded) { 
+    open(FIELDED, "< $fielded") || die("can't open $fielded: $!");
+    my $header = <FIELDED>;
+    chomp $header;
+    @fieldname = quotewords($delim, $keepqu, $header);
+    $nfields = $#fieldname;
+}
+
+&printleading();
+
+#IM,PREM_MULTI078026,F,0,@PREMERAMULTICARE18;IMAGES\00\00;PREM_MULTI078026.TIF;2
+#op,currentkey,doc,offset,fullpath
+while (<>) {
+    my ($op,$ckey,$doc,$offset,$fullpath) = split(/,/, $_, -1);
+    if ($op eq 'IM') {
+    if ($doc =~ /^[A-Z]$/) {
+        $rec != 0 &&  &printrec(); 
+        $rec++;
+    }
+
+    $pc++;
+    $key{$pc} = $ckey;
+
+    ($vol, $path, $img{$pc}, $imgtype) = split(/;/, $fullpath, -1);
+    $vol =~ s/^@//;
+    #FIXME check for vol and path changing?
+    }
+}
+
+&printrec();
+
+sub parsefielded {
+    my $line = <FIELDED>;
+    chomp $line;
+    my $i;
+    my @token = quotewords($delim, $keepqu, $line);
+    #FIXME skip nonmatch and move on to next line of fielded?
+    ($key{1} eq $token[0]) || die("no match for $key{1} in $fielded: $!");
+    #FIXME @MEDIA @EDOC fixes
+    for ($i = 1; $i <= $nfields; $i++) {
+        #FIXME this is new. do we need to strip quotes, or if defined?
+        if ($token[$i]) {
+            print '@C ', $fieldname[$i], ' ', $token[$i];
+        }
+    }
+}
+
+sub printleading {
+    print $texts;
+    if ($nopages) { print $nopages; }
+}
+
+sub printrec {
+    my $i;
+    printf (("\r\n"));
+    print '; Record ', $rec;
+    print '@T ', $key{1};
+    print '@C ENDDOC# ', $key{$pc};
+    print '@C PGCOUNT ', $pc;
+    print '@BATESBEG ', $key{1};
+    print '@BATESEND ', $key{$pc};
+
+    if ($fielded) { &parsefielded(); }
+
+    print '@D @I\\', $vol, '\\', $path, "\\";
+    for ($i = 1; $i <= $pc; $i++) {
+        print $img{$i};
+    }
+
+    $pc = 0;
+    #FIXME put vol and path splitting here?
+}

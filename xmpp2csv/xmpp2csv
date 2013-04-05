@@ -1,0 +1,119 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use English;
+
+my %header;
+my %value;
+my $err = 0;
+my $nrecs = 0;
+my $nfields = 0;
+my $dirn = 0;
+my $qu = '"';
+my $comma = ',';
+my $nrecsindir = 0;
+my $fdir;
+my $ffile;
+my $outf;
+my $fieldn;
+my $path;
+#FIXME obviously this should not be hardwired in.
+my $prefix = "TR000000000001-";
+#FIXME I find this hard to believe
+my $maxrecsindir = 200000;
+
+open(LOG, '>', "log.txt") || die("Can't open log.txt: $!");
+
+newdir();
+
+while (<>) {
+  chomp;
+  if ($_ =~ /^[*][*]* [1-9][0-9]*/) {
+    if ($nrecs == 1) {
+      printheader();
+    }
+    if ($NR > 1) {
+      close(OUT) || die("can't close $outf: $!");
+      printcsv();
+    }
+    if ($nrecsindir == $maxrecsindir) {
+      newdir();
+    }
+    $nrecs++;
+    $nrecsindir++;
+    $ffile = sprintf("%s%08d.txt", $prefix, $nrecs);
+    $outf = "$fdir/$ffile";
+    $path = "$fdir\\$ffile";
+    open(OUT, '>', $outf) || die("Can't open $outf: $!");
+    print OUT;
+    print OUT "\n";
+  } elsif ($_ =~ / *([^:]+): (.*)$/) {
+    $fieldn = $1;
+    my $curvalue = $2;
+    if ($nrecs == 1) {
+      $header{$nfields} = $fieldn;
+      $nfields++;
+    } else {
+      checkheaders();
+    }
+    $value{$fieldn} = $curvalue;
+    print OUT;
+    print OUT "\n";
+  } else {
+    printlog("$NR: non header, non data format\n");
+    $err++;
+  }
+}
+
+printcsv();
+
+sub checkheaders {
+  if ( grep $fieldn, (values %header) ) {
+    return 0;
+  } else {
+    printlog("$NR: new field $fieldn\n");
+    return 1;
+  }
+}
+
+sub printheader {
+  my $key;
+  my @outhead;
+  foreach $key (sort keys %header) {
+    $outhead[$key] = "$qu$header{$key}$qu";
+  }
+  my $last = scalar(@outhead);
+  $outhead[$last] = $qu . "fname" . $qu;
+  $_ = join $comma, @outhead;
+  print;
+  print "\n";
+}
+
+sub printcsv {
+  my $key;
+  my $doublequote;
+  my @outline;
+  foreach $key (sort keys %header) {
+    ($doublequote = $value{$header{$key}}) =~ s/"/""/g;
+    $outline[$key] = "$qu$doublequote$qu";
+  }
+  my $last = scalar(@outline);
+  $outline[$last] = $qu . $path . $qu;
+  $_ = join $comma, @outline;
+  print;
+  print "\n";
+  undef %value;
+}
+
+sub printlog {
+  #print STDERR @_;
+  print LOG @_;
+}
+
+sub newdir {
+  $dirn++;
+  $nrecsindir = 0;
+  $fdir = sprintf("%03d", $dirn);
+  mkdir $fdir || die ("Can't make directory $fdir: $!");
+}

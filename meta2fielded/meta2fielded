@@ -1,0 +1,49 @@
+#!/bin/sh
+
+usage="USAGE: $0 METADATA"
+fields="FIELDS.TXT"
+native="NATIVE_FILE"
+begdoc="BEGDOC"
+
+die() {
+    echo "$@" 1>&2
+    exit 1
+}
+
+warn() {
+    echo "$@" 1>&2
+}
+
+while [ $# -ge 1 ]; do
+    case "$1" in
+      -b)
+        begdoc="$2"
+        shift 2
+        ;;
+      -n)
+        native="$2"
+        shift 2
+        ;;
+      *)
+        break
+        ;;
+    esac
+done
+
+if [ $# = 1 ]; then
+    meta="$1"
+else 
+    die "$usage"
+fi
+
+[ -f "$meta" ] || die "No such file as $meta"
+
+if [ -e "$fields" ]; then
+    mv "$fields" "$fields.bak" || die "can't make backup"
+    warn "backing up $fields"
+fi
+
+ccut "$(chead "$begdoc" "$native" "$meta")" "$meta" |\
+sed 's/,/,"EDOC",/; 1s/EDOC/MEDIA/; 1s/BEGDOC/BEG-DOC/; 1s/'"$native"'/EDOC/' |\
+u2d >"$fields"
+

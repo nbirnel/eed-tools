@@ -1,0 +1,31 @@
+#!/bin/sh
+
+tmpf="$$-findloose"
+
+find . -type d | sort -u | sed '1d;/^ +$/d' >$tmpf
+
+lines=$(wc -l <$tmpf)
+i=0
+
+while [ $i -lt $lines ] ; do
+    let i+=1
+    fn="$(sed -n ${i}p $tmpf )"
+    {
+        echo "$fn" 
+        ls -F "$fn" | sed '/^[ ]*$/d' 
+    } |
+    awk '
+        NR == 1 { filen = $0 } 
+        NR != 1 {
+            if ( $0 ~ /\/$/ ) { d++ }
+            else { f++ }
+        }
+
+        END {
+            if (f + 0 > 0 && d + 0 > 0) { print filen }
+        }
+        '
+done
+
+#rm $tmpf
+

@@ -1,0 +1,37 @@
+.TH lfp2fielded 1 lfp2fielded\-0.0.1
+.SH NAME
+lfp2fielded \- generate fielded text from an lfp
+.SH SYNOPSIS
+.B lfp2fielded [-b BLANKFIELD_TEXT] LFPFILE
+.SH DESCRIPTION
+.B lfp2fielded
+accepts an lfp as its argument, and prints
+a fielded text file to standard out.
+This is handy for creating dii files via Ipro screate,
+or importing into Concordance or Relativity.
+Blank folder fields will be autopopulated with "BLANK",
+or whatever text is supplied with the 
+.B -b
+flag.
+Blank folder fields may be populated with nothing by
+supplying "" to the 
+.B -b
+flag.
+.SH OPTIONS
+.B -b TEXT
+.sp 
+fill blank fields with 
+.B TEXT
+.SH EXIT STATUS
+.B lfp2fielded
+exits with the number of blank fields found.
+.SH EXAMPLES
+lfp2fielded foo.lfp >Fielded.txt
+.SH FILES
+.SH SEE ALSO
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2011 Noah Birnel
+.sp
+You may use this software however you like.

@@ -1,0 +1,52 @@
+#!/bin/sh
+
+native=NATIVE_FILE
+
+warn() {
+    echo "$@" 1>&2
+}
+
+die() {
+    status=$1
+    shift
+    warn "$@"
+    exit $status
+}
+
+while [ $# -gt 0 ]; do
+    case $1 in
+      -x)
+        execute=1
+        shift
+        ;;
+      -n)
+        native="$2"
+        shift 2
+        ;;
+      *)
+        break 2
+        ;;
+    esac
+done
+
+ss="$1" 
+dest="$2"
+out=ssnatives.sh
+
+[ -f "$ss" ] || die 1 "No file $ss"
+[ -d "$dest" ] || die 1 "No destination $dest"
+
+grep ',"Y"' "$ss" |\
+ccut $(chead "$native" "$ss") |\
+sed '
+s,\\,/,g
+s/^/cp -v /
+s,$, "'"$dest"'/",' >"$out"
+
+chmod 755 "$out" 2>/dev/null
+
+if [ $execute ]; then
+    ./"$out"
+fi
+
+#FIXME this is really run from ASCIIDAT.TXT

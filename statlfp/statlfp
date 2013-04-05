@@ -1,0 +1,123 @@
+#!/bin/awk -f
+
+BEGIN { FS = "," }
+
+$1 ~ /^IM$/ {
+    img++
+    if ($3 ~ /^[Ss]$/) { src++ }
+    else if ($3 ~ /^[Bb]$/) { box++ }
+    else if ($3 ~ /^[Ff]$/) { fld++ }
+    else if ($3 ~ /^[Dd]$/) { doc++ }
+    else if ($3 ~ /^[Cc]$/) { chd++ }
+
+    #FIXME should also figure volume name stuff?
+# get the file extension
+    split($5, a, /;/)
+    sub(/.*\./, "", a[3])
+
+#FIXME this could be done internally without a sort, via an array
+# close at the beginning of END
+    printf("%s\n", tolower(a[3])) | "sort | uniq -c"
+
+# range. close at end of END
+    print $2 | "sort | sed -n '1s/$/ to/p; $p'"
+    types[a[4]]++
+}
+
+## boundaries
+#$1 ~ /^BF$/ {
+#$1 ~ /^BM$/ {
+#$1 ~ /^BR$/ {
+#$1 ~ /^LC$/ {
+#
+## adding info to images
+#$1 ~ /^IO$/ {
+#$1 ~ /^IA$/ {
+$1 ~ /^FD$/ { 
+# folder tags. close at end of END
+#FIXME print this to another file?
+    fldtag++ 
+    print > "folder-tags.txt"
+}
+#$1 ~ /^IN$/ {
+#FIXME new
+$1 ~ /^IS$/ { 
+#forward slash tries to output to a subdir. fixed.
+    gsub(/\//, "_", $3)
+    issues[$3]++
+    issueout = sprintf("%s-tags.txt", $3)
+    print > issueout
+    }
+#
+## removing info from images
+#$1 ~ /^IO$/ {
+#$1 ~ /^DT$/ {
+#$1 ~ /^RT$/ {
+#
+## highlighting search text
+#$1 ~ /^FT$/ {
+#$1 ~ /^OT$/ {
+#$1 ~ /^OF$/ {
+#$1 ~ /^OI$/ {
+#
+## moving images
+#$1 ~ /^VF$/ {
+#$1 ~ /^VN$/ {
+#$1 ~ /^FN$/ {
+#
+## changing image key
+#$1 ~ /^CK$/ {
+#    
+## changing image key date
+#$1 ~ /^DA$/ {
+#
+## removing images
+#$1 ~ /^RP$/ {
+#$1 ~ /^RR$/ {
+#
+## securing images
+#$1 ~ /^SR$/ {
+#$1 ~ /^RS$/ {
+#
+# comments
+$1 ~ /^##$/ { comments++ }
+
+END {
+    if (fldtag >= 1) {
+        printf("%d folder tags\n", fldtag)
+        print "list in folder-tags.txt"
+        close("cat")
+    }
+    print "file types:"
+    close("sort | uniq -c")
+    brk = src + box + fld + doc + chd
+    cprint("images\n", img)
+    cprint("sources", src)
+    cprint("boxes", box)
+    cprint("folders", fld)
+    cprint("documents", doc)
+    cprint("children", chd)
+    cprint("total breaks\n", brk)
+#FIXME new
+    for (tag in issues) {
+        printf("%d tagged %s\n", issues[tag], tag)
+        printf("list in %s-tags.txt\n", tag)
+    }
+    print "ipro types:"
+    if (1 in types)  { printf("%d ipro tech img\n", types[1]) }
+    if (2 in types)  { printf("%d tif\n", types[2]) }
+    if (3 in types)  { printf("%d ipro stacked tiff stf\n", types[3]) }
+    if (4 in types)  { printf("%d color\n", types[4]) }
+    if (5 in types)  { printf("%d early bw pdf\n", types[5]) }
+    if (6 in types)  { printf("%d early color pdf\n", types[6]) }
+    if (7 in types)  { printf("%d pdf\n", types[7]) }
+    if (99 in types) { printf("%d placeholder\n", types[99]) }
+    print "\nrange:"
+    close("sort | sed -n '1s/$/ to/p; $p'")
+    cprint("comments", comments)
+}
+
+# conditional print 
+function cprint(string, val) {
+    if (val > 0) { printf("%d %s\n", val, string) }
+}

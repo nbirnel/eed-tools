@@ -1,0 +1,33 @@
+.TH mkdap 1 mkdap\-0.0.1
+.SH NAME
+mkdap \- create lfp which updates direct access path
+.SH SYNOPSIS
+.B mkdap [-a [LFPFILE]] [PATH]
+.SH DESCRIPTION
+mkdap creates an lfp which updates IPRO volume VOLUME's 
+direct access path.
+The default direct access path is set to 
+the parent of the current directory.
+The default lfp is a new one called direct-access.lfp,
+but the lfp may be appended to an existing lfp
+with the -a option.
+.SH OPTIONS
+.B -a
+.br
+append to an lfp file.
+.SH EXAMPLES
+.TP
+mkdap 
+.TP
+mkdap .
+.sp
+Specify the current directory as the direct access path.
+.SH FILES
+.SH SEE ALSO
+.SH BUGS
+Only lfps in the current working directory can be used.
+Probably others.
+.SH LICENSE
+\(co 2011 Noah Birnel
+.sp
+You may use this software however you like.

@@ -1,0 +1,15 @@
+#!/bin/awk -f
+
+BEGIN { 
+    FS = ","
+    printf("im,key,boundary,offset,volume,path,image,type\n")
+}
+
+/^IM/ {
+    split($5, a, ";")
+    sub(/ /, "", $3)
+    printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n", $1, $2, $3, $4, a[1], a[2], a[3], a[4])
+}
+
+
+

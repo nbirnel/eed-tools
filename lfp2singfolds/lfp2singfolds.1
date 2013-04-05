@@ -1,0 +1,22 @@
+.TH lfp2singfolds 1 lfp2singfolds\-0.0.1
+.SH NAME
+lfp2singfolds \- make a shell script to put ocr in folders
+.SH SYNOPSIS
+.B lfp2singfolds LFPFILE
+.SH DESCRIPTION
+lfp2singfolds generates a shell script from an lfp 
+to move single page text into folders analagous to
+the images folders described in the lfp.
+.SH OPTIONS
+none
+.SH EXAMPLES
+lfp2singfolds DATA/sample.lfp >'SINGLE-PAGE TEXT/mover.sh' \
+&& . 'SINGLE-PAGE TEXT/mover.sh'
+.SH FILES
+.SH SEE ALSO
+.SH BUGS
+Probably.
+.SH LICENSE
+\(co 2011 Noah Birnel
+.sp
+You may use this software however you like.
