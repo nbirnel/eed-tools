@@ -1,30 +1,37 @@
-#!/bin/sh
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Getopt::Std;
+use vars qw($opt_x);
 
-warn() {
-    echo "$@" 1>&2
+my $execute = 0;
+my $colordir = "color";
+
+getopts('x');
+if ($opt_x) { $execute = 1;  }
+
+
+if ( -d $colordir ) {
+    warn "Color directory exists: $!";
+} elsif ( -e $colordir ) {
+    die "$colordir is not a directory: $!";
+} else {
+    mkdir $colordir;
 }
 
-execute=false
 
-if [ X"$1" = X"-x" ]; then
-    execute=true
-    shift
-fi
+open SCRIPT, ">colorcp.sh" or die "Can't open colorcp.sh: $!";
 
-umask 000
-test -e color && warn 'color directory exists!'
-mkdir -p color
+LINE: while (<>) {
+    /^IM.*\.jpg;4/i or next LINE;
+    s,\\,/,g;
+    s,','"'"',g;
+    my @a = split /;/;
+    printf SCRIPT "cp -vu '%s/%s' color/\n", $a[1], $a[2];
+}
 
-lfp="$1"
+chmod 0755, "colorcp.sh" or die "Can't chmod colorcp.sh: $!";
 
-grep -i '^IM.*\.jpg;4' "$lfp" |\
-awk -F';' '
-{
-    gsub(/\\/, "/", $2)
-    printf("cp -vu '"'"'%s/%s'"'"' color/\n", $2, $3)
-}' >colorcp.sh
-
-chmod 755 colorcp.sh
-
-$execute && ./colorcp.sh
+$execute && ( system("./colorcp.sh") == 0
+        or die "system ./colorcp.sh failed: $?" )
 
