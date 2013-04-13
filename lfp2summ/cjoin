@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 use strict;
 use warnings;
 use vars qw($opt_j $opt_a $opt_s $opt_1 $opt_2 $opt_h $opt_u);
