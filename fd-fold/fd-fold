@@ -1,7 +1,36 @@
 #!/bin/sh
 
+warn() {
+    echo "$@" 1>&2
+}
+
+die() {
+    status=$1
+    shift
+    warn "$@"
+    exit $status
+}
+
 mover="refold.sh"
 lfp="$1"
+while [ $# -gt 0 ]; do
+    case "$1" in
+      -x)
+        executable=1
+        shift
+        ;;
+      --)
+        shift
+        break 2
+        ;;
+      -*)
+        die 1 "unknown flag $1"
+        ;;
+      *)
+        break 2
+        ;;
+    esac
+done
 
 echo '#!/bin/sh' >"$mover"
 
@@ -17,4 +46,9 @@ BEGIN { FS = "," }
 /^IM,/ { printf("mv -v \"%s.PDF\" \"%s\"\n", $2, fold) }
 ' >>"$mover" 
 
-echo "run $mover from the pdf directory" 1>&2
+if [ -n "$execute" ] 
+    ./"$mover"
+else 
+    warn "run $mover from the pdf directory" 
+fi
+
