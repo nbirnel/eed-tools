@@ -43,10 +43,10 @@ BEGIN { FS = "," }
     printf("mkdir \"%s\"\n", fold)
 }
 
-/^IM,/ { printf("mv -v \"%s.PDF\" \"%s\"\n", $2, fold) }
+/^IM,/ { printf("mv -v \"%s.PDF\" \"%s/\"\n", $2, fold) }
 ' >>"$mover" 
 
-if [ -n "$execute" ] 
+if [ -n "$execute" ]; then
     ./"$mover"
 else 
     warn "run $mover from the pdf directory" 
