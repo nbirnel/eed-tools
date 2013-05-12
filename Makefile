@@ -31,10 +31,10 @@ ${PACKAGE}.pdf :: ${PACKAGE}.1
 
 man : ${PACKAGE}.1 tools/manmaker
 
-README :: README.md
+README :: README.html
 
-README.md :: eed-tools.1
-	man ./$? | col -b >$@
+README.html :: ${PACKAGE}.1
+	groff -tman -Thtml $? >$@
 
 ${PACKAGE}.1 :: tools/manmaker
 	./tools/manmaker ${PROGS}
