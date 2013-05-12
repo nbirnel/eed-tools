@@ -39,8 +39,11 @@ README.md :: ${PACKAGE}.1
 ${PACKAGE}.1 :: tools/manmaker
 	./tools/manmaker ${PROGS}
 	
+clean :: clean-doc
+	rm -f ${PACKAGE}.pdf ${PACKAGE}.1 README.md
+
 clean-doc ::
 	rm -f ${PACKAGE}.ps
 
-.PHONY :: print-doc doc clean-doc man doc install-man install all README
+.PHONY :: print-doc doc clean clean-doc man doc install-man install all readme
 

@@ -76,11 +76,14 @@ doc2pdf</b> &minus; generate pdfs from ms word files.</p>
 <p><b>fd-fold</b></p></td>
 <td width="7%"></td>
 <td width="8%"></td>
-<td width="77%">
+<td width="8%">
 
 
-<p><b>&acirc; generates a shell script to refolder pdfs
-based on lfp FD</b></p></td></tr>
+<p>&minus; generate a</p></td>
+<td width="69%">
+
+
+<p>shell script to refolder pdfs based on lfp FD</p></td></tr>
 </table>
 
 <p style="margin-left:11%;"><b>fieldedcount</b> &minus;
