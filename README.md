@@ -64,31 +64,12 @@ dii2begend</b> &minus; Create a beg-end from a summation dii
 <b><br>
 dii-renum</b> &minus; renumber the records in a dii file
 <b><br>
-doc2pdf</b> &minus; generate pdfs from ms word files.</p>
-
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<tr valign="top" align="left">
-<td width="11%"></td>
-<td width="-3%">
-
-
-<p><b>fd-fold</b></p></td>
-<td width="7%"></td>
-<td width="8%"></td>
-<td width="8%">
-
-
-<p>&minus; generate a</p></td>
-<td width="69%">
-
-
-<p>shell script to refolder pdfs based on lfp FD</p></td></tr>
-</table>
-
-<p style="margin-left:11%;"><b>fieldedcount</b> &minus;
-count billable scan time coding in IPRO&rsquo;s FIELDED.txt
+doc2pdf</b> &minus; generate pdfs from ms word files.
 <b><br>
+fd-fold</b> &minus; refolder pdfs based on lfp FD flags.
+<b><br>
+fieldedcount</b> &minus; count billable scan time coding in
+IPRO&rsquo;s FIELDED.txt <b><br>
 fill</b> &minus; fill blank lines with the last non-blank
 line <b><br>
 findloose</b> &minus; print files in directories with other
