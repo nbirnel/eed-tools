@@ -31,10 +31,10 @@ ${PACKAGE}.pdf :: ${PACKAGE}.1
 
 man : ${PACKAGE}.1 tools/manmaker
 
-README :: README.html
+readme :: README.md
 
-README.html :: ${PACKAGE}.1
-	groff -tman -Thtml $? >$@
+README.md :: ${PACKAGE}.1
+	groff -tman -Thtml $? | sed '/<html/,$$!d; /<style/,/<\/style>/d' >$@
 
 ${PACKAGE}.1 :: tools/manmaker
 	./tools/manmaker ${PROGS}
