@@ -37,7 +37,7 @@ out=ssnatives.sh
 [ -d "$dest" ] || die 1 "No destination $dest"
 
 grep ',"Y"' "$ss" |\
-ccut $(chead "$native" "$ss") |\
+ccut -W $(chead "$native" "$ss") |\
 sed '
 s,\\,/,g
 s/^/cp -v /
