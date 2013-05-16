@@ -3,8 +3,10 @@
 umask 0000
 
 die() {
+    status="$1"
+    shift
     warn "$@"
-    exit 1
+    exit "$status"
 }
 
 warn() {
@@ -62,11 +64,11 @@ if [ $# -ge 4 ]; then
     ini="$config/ini/$4.ini"
 fi
 
-[ -f "$ini" ] || die "No template $ini!"
+[ -f "$ini" ] || die 1 "No template $ini!"
 
 mkdir -p "$vol"
 
-cd "$vol" || die "Can't cd to $vol"
+cd "$vol" || die 1 "Can't cd to $vol"
 
 export="$(cygpath -w "$(pwd)" | sed 's#\\#\\\\#g')"
 
