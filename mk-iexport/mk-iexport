@@ -24,10 +24,35 @@ config="/usr/local/etc/mk-iexport"
 ini="$config/ini/default.ini"
 sfp="$config/sfp/default.sfp"
 
-if [ "$1" = "-l" ]; then
-    showtemplates
-    exit
-fi
+jobno=""
+media=""
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+      -l)
+        showtemplates
+        exit
+        ;;
+      -j)
+        jobno="$2"
+        shift 2
+        ;;
+      -m)
+        media="$2"
+        shift 2
+        ;;
+      --)
+        shift
+        break
+        ;;
+      -*)
+        die 1 "Unknown flag $1"
+        ;;
+      *)
+        break
+        ;;
+    esac
+done
 
 vol="$(echo $1 | tr [:lower:] [:upper:])"
 pref="$2"
@@ -45,7 +70,8 @@ cd "$vol" || die "Can't cd to $vol"
 
 export="$(cygpath -w "$(pwd)" | sed 's#\\#\\\\#g')"
 
-awk -vvol="$vol" -vpref="$pref" -vbates="$bates" -vexport="$export" \ '
+awk -vvol="$vol" -vpref="$pref" -vbates="$bates" -vexport="$export" \
+ -vjobno="$jobno" -vmedia="$media" '
 
 BEGIN {
     FS  = "="
@@ -57,6 +83,8 @@ $2 == "!!VOLUME!!" { $2 = vol    }
 $2 == "!!PREFIX!!" { $2 = pref   }
 $2 == "!!BATES!!"  { $2 = bates  }
 $2 == "!!EXPORT!!" { $2 = export }
+$2 == "!!JOBNO!!"  { $2 = jobno }
+$2 == "!!MEDIA!!"  { $2 = media }
                    { print       }
 
 ' "$ini" >"$vol.ini"
