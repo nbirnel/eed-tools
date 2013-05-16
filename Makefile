@@ -31,16 +31,19 @@ ${PACKAGE}.pdf :: ${PACKAGE}.1
 
 man : ${PACKAGE}.1 tools/manmaker
 
-README :: README.md
+readme :: README.md
 
-README.md :: eed-tools.1
-	man ./$? | col -b >$@
+README.md :: ${PACKAGE}.1
+	groff -tman -Thtml $? | sed '/<html/,$$!d; /<style/,/<\/style>/d' >$@
 
 ${PACKAGE}.1 :: tools/manmaker
 	./tools/manmaker ${PROGS}
 	
+clean :: clean-doc
+	rm -f ${PACKAGE}.pdf ${PACKAGE}.1 README.md
+
 clean-doc ::
 	rm -f ${PACKAGE}.ps
 
-.PHONY :: print-doc doc clean-doc man doc install-man install all README
+.PHONY :: print-doc doc clean clean-doc man doc install-man install all readme
 
