@@ -43,7 +43,7 @@ if [ -e "$fields" ]; then
     warn "backing up $fields"
 fi
 
-ccut "$(chead "$begdoc" "$native" "$meta")" "$meta" |\
+ccut -W "$(chead "$begdoc" "$native" "$meta")" "$meta" |\
 sed 's/,/,"EDOC",/; 1s/EDOC/MEDIA/; 1s/BEGDOC/BEG-DOC/; 1s/'"$native"'/EDOC/' |\
 u2d >"$fields"
 
