@@ -12,10 +12,13 @@ install : $(PROG) $(PROG).1 etc
 	cp -f $(PROG).1 ${DESTDIR}${PREFIX}/man/man1
 	chmod 644 ${DESTDIR}${PREFIX}/man/man1/$(PROG).1
 
+pushini : 
+	cd etc/ini/ && make -f local_makefile
+
 deinstall :
 	rm -f ${DESTDIR}${PREFIX}/bin/$(PROG)
 	rm -fr ${DESTDIR}${PREFIX}/etc/${PROG}/
 	rm -f ${DESTDIR}${PREFIX}/man/man1/$(PROG).1
 	echo "Make deinstall does not deinstall user templates!" 1>&2
 
-.PHONY : deinstall install
+.PHONY : deinstall install pushini

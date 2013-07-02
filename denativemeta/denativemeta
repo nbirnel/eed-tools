@@ -63,7 +63,7 @@ else
 fi
 
 
-grep -v ',"Y"' "$meta" | sed 1d | ccut "$flags" >"$noslip"
+grep -v ',"Y"' "$meta" | sed 1d | ccut -W "$flags" >"$noslip"
 
 sort "$slip" "$noslip" | u2d >>"$out"
 

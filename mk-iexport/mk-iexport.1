@@ -2,7 +2,7 @@
 .SH NAME
 mk-iexport \- set up ipro ecap export
 .SH SYNOPSIS
-.B mk-iexport VOLUME PREFIX NUMBER [TEMPLATE]
+.B mk-iexport [OPTIONS] VOLUME PREFIX NUMBER [TEMPLATE]
 .br
 .B mk-iexport -l
 .SH DESCRIPTION
@@ -12,9 +12,15 @@ creates an sfp file for a new ipro job,
 and puts the full explorer path to VOLUME in the windows clipboard.
 VOLUME will be capitalized for you.
 .SH OPTIONS
--l
-.br
+.B -l
 list available templates.
+.br
+.B -j
+set job number
+.br
+.B -l
+set media id
+.br
 .SH EXAMPLES
 mk-iexport trailboss01 control 0001
 .sp
@@ -31,6 +37,6 @@ There is no error checking.
 Ecap ignores the bates number.
 Probably others.
 .SH LICENSE
-\(co 2011 - 2012 Noah Birnel
+\(co 2011 - 2013 Noah Birnel
 .sp
 You may use this software however you like.
