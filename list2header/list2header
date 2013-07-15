@@ -1,6 +1,5 @@
 #!/bin/sh
 
-sed 's/ .*//' | \
 awk '{ printf("\"%s\",", $0) }' | \
 sed 's/,$/\n/' 
 
