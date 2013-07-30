@@ -19,7 +19,7 @@ BEGIN {
     path = a[2]
     img = a[3]
     key = $2
-    line[imgc] = sprintf("%s,%s,X:\\%s\\%s\\%s", key, vol, vol, path, img)
+    line[imgc] = sprintf("%s,%s,X:\\%s\\%s", key, vol, path, img)
 }
 
 END {
