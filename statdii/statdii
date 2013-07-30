@@ -1,6 +1,7 @@
 #!/bin/sh
 
-echo "$(grep -c '^; Record' "$1") docs"
+echo "$(grep -c '^; Record' "$1") record comments"
+echo "$(grep -c '^@T .*' "$1") docs"
 
 tiff=$(grep -ci '^[^@].*\.tif$' "$1")
 jpg=$(grep -ci '^[^@].*\.jpg$' "$1")
