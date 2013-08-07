@@ -36,7 +36,7 @@ if [ $# = 2 ]; then
     volume="$2"
 elif [ $# = 1 ]; then
     input="$1"
-    volume="$(echo "$input" | sed 's#\..*##')"
+    volume="$(basename "$input" | sed 's#\..*##')"
 else
     die "USAGE: fixdii INPUTFILE [VOLUME]"
 fi
