@@ -1,6 +1,8 @@
 #!/bin/sh
 
-find -type f | sort -u >/tmp/list
+where=.
+
+find "$where" -type f | sort -u >/tmp/list
 awk -F'/' '{ printf("%s\n", tolower($NF)) }' /tmp/list |\
 awk -F.   '{ print $NF }' |\
 sort | uniq -c |\
