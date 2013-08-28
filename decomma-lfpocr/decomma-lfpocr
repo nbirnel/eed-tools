@@ -1,0 +1,22 @@
+#!/usr/bin/awk -f
+
+BEGIN { 
+    FS = OFS = "," 
+}
+
+# $1,$2 ,$3      ,$4                   ,$5 - $NF
+# FT,KEY,X-PIXELS,Y-PIXELS:CONFIDENCE:?,OCR
+# We are looking to remove the commas from the OCR.
+$1 == "FT" {
+    for (i = 5; i <= NF; i++) {
+        ocr = ocr $i
+    }
+    printf("%s,%s,%s,%s,%s\r\n", $1, $2, $3, $4, ocr)
+    ocr = ""
+}
+
+# just print anything that's not full text
+$1 != "FT" {
+    printf("%s\r\n", $0)
+}
+

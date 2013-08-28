@@ -1,0 +1,30 @@
+.TH decomma-lfpocr 1 decomma-lfpocr\-0.0.1
+.SH NAME
+decomma-lfpocr \- remove commas from Ipro ocr lfp
+.SH SYNOPSIS
+.B decomma-lfpocr [FILE]
+.SH DESCRIPTION
+decomma-lfpocr removes all commas in the ocr portion of 
+.B FT 
+tokens
+from a file provided on the command line,
+or from standard in,
+and prints to standard out.
+This is useful since Ipro Tech Suite regards those commas as field delimiters,
+and will cull any ocr after the first one.
+.SH OPTIONS
+none
+.SH EXAMPLES
+decomma-lfpocr IPROOCR.LFP >for-ipro-tech.lfp
+.SH FILES
+.SH SEE ALSO
+.SH BUGS
+This outputs \\r\\n line endings, 
+which is what Ipro tech needs, 
+but is not correct for pipelines. 
+This is to be considered a feature.
+There are probably other real bugs.
+.SH LICENSE
+\(co 2013 Noah Birnel
+.sp
+You may use this software however you like.
