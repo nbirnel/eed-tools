@@ -3,7 +3,7 @@
 while :; do
     cat [0-9][0-9][0-9][0-9].LOG 2>/dev/null && break
     echo "waiting for ocr to be done..."
-    echo "$(find -type f [0-9][0-9][0-9][0-9] | wc -l) text made"
+    echo "$(find [0-9][0-9][0-9][0-9] -type f | wc -l) text made"
     sleep 5
 done
 
