@@ -24,19 +24,21 @@ yankit() {
     )
 }
 
-while [ "$#" -gt 1 ]; do
+while [ "$#" -gt 2 ]; do
     case "$1" in 
-      --skip*)
+      --skip-coloryank)
         skipcolor=1
         shift
         ;;
       --)
         shift
         break
+        ;;
       *)
         die 1 "unkown flag"
         shift 
         break
+        ;;
     esac
 done
        
