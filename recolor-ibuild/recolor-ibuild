@@ -52,11 +52,11 @@ ls "$clr"/color | sort -u | sed 's/\.[Jj][Pp][Gg]$//' >colorlist
 
 pwd
 #extract the color
-cat "$clr"/DATA/*.[Ll][Ff][Pp] | d2u | grep '^IM,' | sort -t, -k2,2 |\
+d2u < "$clr"/DATA/*.[Ll][Ff][Pp] | grep '^IM,' | sort -t, -k2,2 |\
 join -t, -12 -21 -o'1.1 1.2 1.3 1.4 1.5' - colorlist > color.lfp.tmp
 
 #extract the not color
-cat "$bnw"/DATA/*.[Ll][Ff][Pp] | d2u | grep '^IM,' | sort -t, -k2,2 |\
+d2u < "$bnw"/DATA/*.[Ll][Ff][Pp] | grep '^IM,' | sort -t, -k2,2 |\
 join -t, -12 -21 -o'1.1 1.2 1.3 1.4 1.5' -v1 - colorlist > bnw.lfp.tmp
 
 #and mix them together
