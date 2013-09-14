@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/bash
 
 die() {
     status="$1"
@@ -52,7 +52,6 @@ ls "$clr"/color | sort -u | sed 's/\.[Jj][Pp][Gg]$//' >colorlist
 #FIXME we'll have to join the colorlist with the bnw lfp
 #      to figure out where to put the jpgs. sigh.
 
-pwd
 #extract the color
 d2u < "$clr"/DATA/*.[Ll][Ff][Pp] | grep '^IM,' | sort -t, -k2,2 |\
 join -t, -12 -21 -o'1.1 1.2 1.3 1.4 1.5' - colorlist > color.lfp.tmp
