@@ -11,20 +11,39 @@ warn() {
     echo "$@" 1>&2
 }
 
+yankit() {
+    (
+    cd "$clr" || die 1 "Can't change directories to $clr"
+    warn Copying out our color
+#coloryank
+    warn Please review, rotate, and cull your color in:
+    warn "$clr"/color
+    warn Press any key when you are done culling...
+
+    read
+    )
+}
+
+while [ "$#" -gt 1 ]; do
+    case "$1" in 
+      --skip*)
+        skipcolor=1
+        shift
+        ;;
+      --)
+        shift
+        break
+      *)
+        die 1 "unkown flag"
+        shift 
+        break
+    esac
+done
+       
 clr="$1"
 bnw="$2"
 
-(
-cd "$clr" || die 1 "Can't change directories to $clr"
-warn Copying out our color
-#coloryank
-warn Please review, rotate, and cull your color in:
-warn "$clr"/color
-warn Press any key when you are done culling...
-
-read
-)
-
+test "$skip" != 1 && yankit
 
 ls "$clr"/color | sort -u | sed 's/\.[Jj][Pp][Gg]$//' >colorlist
 
