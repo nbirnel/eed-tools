@@ -75,6 +75,7 @@ s#[^;]*;\([^;]*\);\([^;]*\);.*#cp -uv "'"$clr"'/color/\2" "'"$bnw"'/\1/"#
 . ./mover.sh
 
 warn "If you used different project names for your builds,"
-warn "you'll need to edit $bnw/DATA/color.lfp"
+warn "you'll need to "
+warn '$EDITOR' "$bnw/DATA/color.lfp"
 
 
