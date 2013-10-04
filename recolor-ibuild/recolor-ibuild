@@ -73,6 +73,7 @@ s#\\#/#g;
 s#[^;]*;\([^;]*\);\([^;]*\);.*#cp -uv "'"$clr"'/color/\2" "'"$bnw"'/\1/"#
 ' color.lfp.tmp >mover.sh
 
+#FIXME don't move the color at all, just add direct access paths 
 #FIXME This is not so safe what with umask 000.
 . ./mover.sh
 
