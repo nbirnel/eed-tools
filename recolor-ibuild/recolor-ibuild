@@ -15,10 +15,12 @@ yankit() {
     (
     cd "$clr" || die 1 "Can't change directories to $clr"
     warn Copying out our color
-#coloryank
+    mkdir color || die 1 "Can't make $clr/color"
+    cp -v IMAGES/*/*/*[Jj][Pp][Gg] color/
     warn Please review, rotate, and cull your color in:
     warn "$clr"/color
     warn Press any key when you are done culling...
+    cygstart "$clr"
 
     read
     )
