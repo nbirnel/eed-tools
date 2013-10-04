@@ -58,6 +58,8 @@ directory <b><br>
 count-iocr</b> &minus; provide ocr stats from IPRO ecap ocr
 summaries <b><br>
 debom</b> &minus; remove byte order mark <b><br>
+decomma-lfpocr</b> &minus; remove commas from Ipro ocr lfp
+<b><br>
 denativemeta</b> &minus; empty NATIVE_FILE in metadata
 records without slipsheets <b><br>
 dii2begend</b> &minus; Create a beg-end from a summation dii
@@ -108,6 +110,9 @@ lfpfolderbreak</b> &minus; generate parent break lfp for
 each folder change <b><br>
 lfppath2issues</b> &minus; create an issues lfp from another
 lfp <b><br>
+lfp-renumber</b> &minus; renumber an Ipro lfp <b><br>
+list2header</b> &minus; make a csv header from a list
+<b><br>
 ls2begend</b> &minus; create begin - end ranges for a list
 of filenames <b><br>
 meta2begend</b> &minus; generate begin end ranges from a csv
