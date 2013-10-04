@@ -1,0 +1,26 @@
+.TH lfp-renumber 1 lfp-renumber\-0.0.1
+.SH NAME
+lfp-renumber \- renumber an Ipro lfp
+.SH SYNOPSIS
+.B lfp-renumber FILE
+.SH DESCRIPTION
+.B lfp-renumber
+renumbers an lfp supplied on the command line or standard in,
+and prints to standard out. 
+The numbers are without prefix, 
+six zero padded,
+and start at one.
+.SH OPTIONS
+none
+.SH EXAMPLES
+.B lfp-renumber EDITED.LFP >RENUMBERED.LFP
+.SH FILES
+.SH SEE ALSO
+.SH BUGS
+Only IM op-codes get renumbered, 
+so any IS tags, etc will fall out of sync.
+Probably others.
+.SH LICENSE
+Copyright 2013 
+.sp
+You may use this software however you like.

@@ -1,0 +1,16 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+    FS = OFS = "," 
+    ORS = "\r\n"
+    begnum = 1
+}
+
+$1 == "IM" {
+    $2 = sprintf("%06d", begnum)
+    begnum++
+}
+
+{ print }
+
+
