@@ -26,10 +26,12 @@ yankit() {
     )
 }
 
+yank=1
+
 while [ "$#" -gt 2 ]; do
     case "$1" in 
       --skip-coloryank)
-        skipcolor=1
+        yank=0
         shift
         ;;
       --)
@@ -47,7 +49,7 @@ done
 clr="$1"
 bnw="$2"
 
-test "$skip" != 1 && yankit
+test "$yank" -eq 1 && yankit
 
 ls "$clr"/color | sort -u | sed 's/\.[Jj][Pp][Gg]$//' >colorlist
 
