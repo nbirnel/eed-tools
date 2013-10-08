@@ -57,27 +57,32 @@ ls "$clr"/color | sort -u | sed 's/\.[Jj][Pp][Gg]$//' >colorlist
 #      to figure out where to put the jpgs. sigh.
 
 #extract the color
+( cd "$clr"/DATA/ && mkdap -a )
 d2u < "$clr"/DATA/*.[Ll][Ff][Pp] | grep '^IM,' | sort -t, -k2,2 |\
 join -t, -12 -21 -o'1.1 1.2 1.3 1.4 1.5' - colorlist > color.lfp.tmp
 
 #extract the not color
+( cd "$bnw"/DATA/ && mkdap -a )
 d2u < "$bnw"/DATA/*.[Ll][Ff][Pp] | grep '^IM,' | sort -t, -k2,2 |\
 join -t, -12 -21 -o'1.1 1.2 1.3 1.4 1.5' -v1 - colorlist > bnw.lfp.tmp
 
 #and mix them together
-sort -t, -k2,2 bnw.lfp.tmp color.lfp.tmp | u2d > "$bnw"/DATA/color.lfp
+mkdir combined
+sort -t, -k2,2 bnw.lfp.tmp color.lfp.tmp | u2d > combined/combined.lfp
+cat "$clr"/DATA/direct-access.lfp >>combined/combined.lfp
+cat "$bnw"/DATA/direct-access.lfp >>combined/combined.lfp
 
 #and put the jpgs where the new lfp can find them
 warn "Copying billable color to it's new home. Could be slow!"
 
-sed '
-s#\\#/#g;
-s#[^;]*;\([^;]*\);\([^;]*\);.*#cp -uv "'"$clr"'/color/\2" "'"$bnw"'/\1/"#
-' color.lfp.tmp >mover.sh
+#sed '
+#s#\\#/#g;
+#s#[^;]*;\([^;]*\);\([^;]*\);.*#cp -uv "'"$clr"'/color/\2" "'"$bnw"'/\1/"#
+#' color.lfp.tmp >mover.sh
 
 #FIXME don't move the color at all, just add direct access paths 
 #FIXME This is not so safe what with umask 000.
-. ./mover.sh
+#. ./mover.sh
 
 warn "If you used different project names for your builds,"
 warn "you'll need to "
