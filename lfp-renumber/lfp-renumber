@@ -3,14 +3,13 @@
 BEGIN {
     FS = OFS = "," 
     ORS = "\r\n"
+    pad = sprintf("%%0%dd", 6)
     begnum = 1
 }
 
 $1 == "IM" {
-    $2 = sprintf("%06d", begnum)
+    $2 = sprintf(pad, begnum)
     begnum++
 }
 
 { print }
-
-
