@@ -68,11 +68,11 @@ join -t, -12 -21 -o'1.1 1.2 1.3 1.4 1.5' -v1 - colorlist > bnw.lfp.tmp
 
 #and mix them together
 mkdir combined
-combined_lfp=$combined_lfp
+combined_lfp=combined/combined.lfp
 sort -t, -k2,2 bnw.lfp.tmp color.lfp.tmp | u2d > $combined_lfp
 cat "$clr"/DATA/direct_access.lfp >>$combined_lfp
 cat "$bnw"/DATA/direct_access.lfp >>$combined_lfp
 
-warn 'Use $combined_lfp"
+warn "Use $combined_lfp"
 
 

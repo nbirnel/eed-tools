@@ -4,20 +4,17 @@ recolor-ibuild \- combine a color build and a black and white build
 .SH SYNOPSIS
 .B recolor-ibuild [--skip-coloryank] COLORDIR BNWDIR
 .SH DESCRIPTION
-recolor-ibuild creates a new lfp from the two input builds, places 
-it in the bnw build, and copies the selected color to the
-appropriate spot.
+recolor-ibuild creates a new lfp from the two input builds,
+and places it in a combined directory.
 .SH OPTIONS
 .B --skip-coloryank
 assume the color has already been culled before running this script
 .SH SEE ALSO
 coloryank(1)
 .SH BUGS
-Uses a temporary shell script with wide open permissions,
-leading to potential security risks.
-Probably others.
 Written in bash.
+Probably others.
 .SH LICENSE
-\(co 2012 Noah Birnel
+\(co 2012, 2013 Noah Birnel
 .sp
 You may use this software however you like.
