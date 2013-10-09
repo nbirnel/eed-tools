@@ -3,13 +3,15 @@
 BEGIN {
     FS = OFS = "," 
     ORS = "\r\n"
+    prefix = "CTRL"
     pad = 6
     begnum = 1
-    padfmt = sprintf("%%0%dd", pad)
+    # our default format will be CTRL%06d
+    fmt = sprintf("%s%%0%dd", prefix, pad)
 }
 
 $1 == "IM" {
-    $2 = sprintf(padfmt, begnum)
+    $2 = sprintf(fmt, begnum)
     begnum++
 }
 
