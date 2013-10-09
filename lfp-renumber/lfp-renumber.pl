@@ -1,20 +1,24 @@
 #!/usr/bin/perl
 
-$FS = $, = ',';
+use strict;
+use warnings;
+use English;
+
+my $FS = $, = ',';
 $\ = "\r\n";
-$prefix = 'CTRL';
-$pad = 6;
-$begnum = 1;
+my $prefix = 'CTRL';
+my $pad = 6;
+my $begnum = 1;
 # our default format will be CTRL%06d
-$fmt = sprintf('%s%%0%dd', $prefix, $pad);
+my $fmt = sprintf('%s%%0%dd', $prefix, $pad);
 
 while (<>) {
     chomp;	# strip record separator
-    @Fld = split($FS, $_, -1);
-    if ($Fld[(1)-1] eq 'IM') {
-        $Fld[(2)-1] = sprintf($fmt, $begnum);
+    my @fields = split($FS, $_, -1);
+    if ($fields[0] eq 'IM') {
+        $fields[1] = sprintf($fmt, $begnum);
         $begnum++;
     }
 
-    print join($,,@Fld);
+    print join($,,@fields);
 }
