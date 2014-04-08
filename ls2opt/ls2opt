@@ -1,0 +1,57 @@
+#!/bin/sh
+
+volume='VOLUME'
+USAGE="USAGE: $0 [-v VOLUME] PATH"
+
+die() {
+    status="$1"
+    shift
+    echo "$@" >&2
+    exit $status
+}
+
+im2record() {
+    path="$1"
+    find "$path" -type f |\
+    sed 's#\(.*/\)\(.*\)\(\..*\)#\2,'"$volume"',\1\2\3,,,,#' |\
+    #       capture the path as \1
+    #              capture the image key as \2
+    #                    capture the file extension as \3
+    #                            image key,
+    #                                 volume,
+    #                                          ,full path,
+    #                                                 ,,,,
+    sed 's,/,\\,g' |\
+    u2d
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+      -v)
+        volume="$2"
+        shift 2
+        ;;
+      -h)
+        die 0 $USAGE
+        shift
+        ;;
+      --)
+        shift
+        break
+        ;;
+      -*)
+        die 1 $USAGE
+        shift
+        ;;
+      *)
+        break
+        ;;
+    esac
+done
+
+test $# -lt 1 && die 1 $USAGE
+
+for i in "$@"; do
+    im2record "$i"
+done
+

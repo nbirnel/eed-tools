@@ -1,0 +1,36 @@
+.# vim: ft=nroff
+.TH ls2opt 1 ls2opt\-0.0.1
+.SH NAME
+ls2opt \- generate an opt file from a directory
+.SH SYNOPSIS
+.B ls2opt [-v VOLUME] PATH
+.SH DESCRIPTION
+.B ls2opt
+dives into a directory suppliced on the command line
+and generates single-page opticon records for each file it finds.
+.SH OPTIONS
+.TP 5
+.B -h
+Print a brief usage message.
+.TP 5
+.B -v
+Specify the volume name.
+.SH EXAMPLES
+.LP
+.B ls2opt -v SAMPLE01 IMAGES >sample01.opt
+.SH EXIT STATUS
+exits non-zero on error.
+.SH AUTHOR
+Noah Birnel
+.SH BUGS
+Provides no document breaks. 
+This is arguably a feature.
+
+Treats all files of any sort as single page images.
+
+Probably others.
+.SH LICENSE
+Copyright 2014 Noah Birnel
+.sp
+Do what you like with this software.
+
