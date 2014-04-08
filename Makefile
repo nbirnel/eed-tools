@@ -10,7 +10,7 @@ printsqc prt-rename prt-split prt-uncollate recolor-ibuild rellfp2ipro  \
 relsql-mkindex robo-iocr rotate sing2multt ss2natives statbegend statdat \
  statdii statlfp statopt statvstats summ-refold txt2ss watch-ibuild  \
 watch-icommit watch-iexport watch-iocr xmpp2csv list2header decomma-lfpocr \
-lfp-renumber
+lfp-renumber ls2opt
 
 install :: ${PROGS}
 
