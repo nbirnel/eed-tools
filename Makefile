@@ -32,7 +32,14 @@ ${PACKAGE}.pdf :: ${PACKAGE}.1
 
 man : ${PACKAGE}.1 tools/manmaker
 
+push :
+	git push origin master
+
+pull :
+	git pull origin master
+
 readme :: README.md
+	git commit -m'update $?' $?
 
 README.md :: ${PACKAGE}.1
 	groff -tman -Thtml $? | sed '/<html/,$$!d; /<style/,/<\/style>/d' >$@
