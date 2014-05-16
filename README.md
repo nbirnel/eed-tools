@@ -115,6 +115,8 @@ list2header</b> &minus; make a csv header from a list
 <b><br>
 ls2begend</b> &minus; create begin - end ranges for a list
 of filenames <b><br>
+ls2opt</b> &minus; generate an opt file from a directory
+<b><br>
 meta2begend</b> &minus; generate begin end ranges from a csv
 metadata file <b><br>
 meta2fielded</b> &minus; generate fielded text file from a
