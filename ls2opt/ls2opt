@@ -1,6 +1,7 @@
 #!/bin/sh
 
 volume='VOLUME'
+breaks=",,,,"
 USAGE="USAGE: $0 [-v VOLUME] PATH"
 
 die() {
@@ -13,14 +14,14 @@ die() {
 im2record() {
     path="$1"
     find "$path" -type f |\
-    sed 's#\(.*/\)\(.*\)\(\..*\)#\2,'"$volume"',\1\2\3,,,,#' |\
+    sed 's#\(.*/\)\(.*\)\(\..*\)#\2,'"$volume"',\1\2\3'"$breaks"'#' |\
     #       capture the path as \1
     #              capture the image key as \2
     #                    capture the file extension as \3
     #                            image key,
     #                                 volume,
     #                                          ,full path,
-    #                                                 ,,,,
+    #                                                   breaks
     sed 's,/,\\,g' |\
     u2d
 }
@@ -33,6 +34,10 @@ while [ $# -gt 0 ]; do
         ;;
       -h)
         die 0 $USAGE
+        shift
+        ;;
+      -b)
+        breaks=",Y,,,1"
         shift
         ;;
       --)

@@ -7,7 +7,7 @@ ls2opt \- generate an opt file from a directory
 .SH DESCRIPTION
 .B ls2opt
 dives into a directory suppliced on the command line
-and generates single-page opticon records for each file it finds.
+and generates an opticon record for each file it finds.
 .SH OPTIONS
 .TP 5
 .B -h
@@ -15,6 +15,9 @@ Print a brief usage message.
 .TP 5
 .B -v
 Specify the volume name.
+.TP 5
+.B -b
+Give each image a doc break.
 .SH EXAMPLES
 .LP
 .B ls2opt -v SAMPLE01 IMAGES >sample01.opt
@@ -23,9 +26,6 @@ exits non-zero on error.
 .SH AUTHOR
 Noah Birnel
 .SH BUGS
-Provides no document breaks. 
-This is arguably a feature.
-
 Treats all files of any sort as single page images.
 
 Probably others.
