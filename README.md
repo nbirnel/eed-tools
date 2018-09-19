@@ -8,6 +8,8 @@
 </head>
 <body>
 
+This is not maintained.
+
 <h1 align="center">eed-tools</h1>
 
 <a href="#NAME">NAME</a><br>
